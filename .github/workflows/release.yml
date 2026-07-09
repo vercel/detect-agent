@@ -43,6 +43,7 @@ jobs:
           version: pnpm version-packages
           commit: 'chore: update package versions'
           title: 'chore: update package versions'
+          commitMode: github-api
         env:
           GITHUB_TOKEN: ${{ github.token }}
           NPM_CONFIG_PROVENANCE: true
