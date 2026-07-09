@@ -38,6 +38,7 @@
   "engines": {
     "node": ">=20"
   },
+  "packageManager": "pnpm@10.9.0",
   "scripts": {
     "build": "tsup",
     "test": "vitest run",
@@ -46,7 +47,10 @@
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "format": "oxfmt",
-    "format:check": "oxfmt --check"
+    "format:check": "oxfmt --check",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "pnpm build && changeset publish"
   },
   "files": [
     "dist",
@@ -56,6 +60,7 @@
     "CHANGELOG.md"
   ],
   "devDependencies": {
+    "@changesets/cli": "^2.31.0",
     "@types/mock-fs": "4.13.4",
     "@types/node": "^22.10.0",
     "mock-fs": "5.5.0",
