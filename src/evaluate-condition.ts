@@ -15,6 +15,20 @@ export async function evaluateCondition(
       return Boolean(process.env[condition.name]);
     case 'env_value':
       return process.env[condition.name] === condition.value;
+    case 'env_matches': {
+      const value = process.env[condition.name];
+      if (!value) {
+        return false;
+      }
+      try {
+        return new RegExp(condition.pattern).test(value);
+      } catch {
+        // A malformed pattern in the spec should never throw at detection time.
+        return false;
+      }
+    }
+    case 'no_tty':
+      return !process.stdout?.isTTY;
     case 'file_exists':
       try {
         await access(condition.path, constants.F_OK);

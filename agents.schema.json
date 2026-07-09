@@ -56,7 +56,9 @@
         { "$ref": "#/definitions/allOf" },
         { "$ref": "#/definitions/envSet" },
         { "$ref": "#/definitions/envValue" },
-        { "$ref": "#/definitions/fileExists" }
+        { "$ref": "#/definitions/envMatches" },
+        { "$ref": "#/definitions/fileExists" },
+        { "$ref": "#/definitions/noTty" }
       ]
     },
     "anyOf": {
@@ -106,6 +108,17 @@
         "value": { "type": "string" }
       }
     },
+    "envMatches": {
+      "type": "object",
+      "description": "Leaf: matches when the named environment variable is set and its value matches `pattern`. `pattern` is a regular-expression source string (no delimiters), applied with substring semantics (not anchored) and case-sensitive. An unset variable never matches.",
+      "required": ["type", "name", "pattern"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "const": "env_matches" },
+        "name": { "type": "string" },
+        "pattern": { "type": "string" }
+      }
+    },
     "fileExists": {
       "type": "object",
       "description": "Leaf: matches when the given filesystem path exists.",
@@ -114,6 +127,15 @@
       "properties": {
         "type": { "const": "file_exists" },
         "path": { "type": "string" }
+      }
+    },
+    "noTty": {
+      "type": "object",
+      "description": "Leaf: matches when the process is non-interactive (standard output is not a TTY). Unlike the other leaves this reads runtime process state rather than the environment or filesystem; it exists to disambiguate terminal-based IDE agents (e.g. pairing an `env_matches` on TERM_PROGRAM with `no_tty`) so a human at the IDE's integrated terminal is not misdetected as the agent.",
+      "required": ["type"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "const": "no_tty" }
       }
     }
   }
