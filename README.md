@@ -36,15 +36,20 @@ The agent detection rules live in [`agents.json`](https://raw.githubusercontent.
 
 This package can detect the following AI agents and development environments:
 
-- **Custom agents** via `AI_AGENT` environment variable
-- **Cursor** (cursor editor and cursor-cli)
-- **Claude Code** (Anthropic's Claude)
+- **Cursor** (Anysphere)
+- **Claude Code** (Anthropic)
+- **Claude Cowork** (Anthropic)
 - **Devin** (Cognition Labs)
 - **Gemini CLI** (Google)
 - **Codex** (OpenAI)
 - **Antigravity** (Google DeepMind)
-- **GitHub Copilot** (via `AI_AGENT=github-copilot`, `COPILOT_MODEL`, `COPILOT_ALLOW_ALL`, or `COPILOT_GITHUB_TOKEN`)
-- **Replit** (online IDE)
+- **Augment**
+- **OpenCode**
+- **GitHub Copilot**
+- **Replit**
+- **Custom agents** (via the `AI_AGENT` environment variable)
+
+See [`agents.json`](https://raw.githubusercontent.com/vercel/detect-agent/main/agents.json) for the exact environment variables and conditions used to detect each one.
 
 ## The AI_AGENT Standard
 
@@ -124,10 +129,9 @@ We welcome contributions!
 
 To add support for a new AI agent:
 
-1. Add detection logic to `src/index.ts`
-2. Add comprehensive test cases in `test/unit/determine-agent.test.ts`
-3. Update this README with the new agent information
-4. Follow the existing priority order pattern
+1. Add the agent's detection rule to [`agents.json`](./agents.json), following the structure defined in [`agents.schema.json`](./agents.schema.json). Agents are evaluated in array order — the first match wins, so place more specific rules before more general ones.
+2. Add test cases in `src/determine-agent.test.ts`.
+3. Add the agent to the **Supported Agents** list above.
 
 ## Links
 
