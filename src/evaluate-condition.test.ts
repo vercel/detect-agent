@@ -102,6 +102,80 @@ describe('evaluateCondition', () => {
     });
   });
 
+  describe('env_matches', () => {
+    it('is true when the value matches the pattern', async () => {
+      vi.stubEnv('PATH', '/usr/bin:/home/me/.pi/agent/bin');
+      expect(
+        await evaluateCondition({
+          type: 'env_matches',
+          name: 'PATH',
+          pattern: '\\.pi[\\\\/]agent',
+        })
+      ).toBe(true);
+    });
+
+    it('matches a backslash path separator too', async () => {
+      vi.stubEnv('PATH', 'C:\\Users\\me\\.pi\\agent\\bin');
+      expect(
+        await evaluateCondition({
+          type: 'env_matches',
+          name: 'PATH',
+          pattern: '\\.pi[\\\\/]agent',
+        })
+      ).toBe(true);
+    });
+
+    it('is false when the value does not match', async () => {
+      vi.stubEnv('PATH', '/usr/bin:/usr/local/bin');
+      expect(
+        await evaluateCondition({
+          type: 'env_matches',
+          name: 'PATH',
+          pattern: '\\.pi[\\\\/]agent',
+        })
+      ).toBe(false);
+    });
+
+    it('is false when the variable is unset', async () => {
+      vi.stubEnv('TERM_PROGRAM', '');
+      expect(
+        await evaluateCondition({
+          type: 'env_matches',
+          name: 'TERM_PROGRAM',
+          pattern: 'kiro',
+        })
+      ).toBe(false);
+    });
+
+    it('is false when the pattern is invalid rather than throwing', async () => {
+      vi.stubEnv('TERM_PROGRAM', 'kiro');
+      expect(
+        await evaluateCondition({
+          type: 'env_matches',
+          name: 'TERM_PROGRAM',
+          pattern: '(',
+        })
+      ).toBe(false);
+    });
+  });
+
+  describe('no_tty', () => {
+    const original = process.stdout.isTTY;
+    afterEach(() => {
+      process.stdout.isTTY = original;
+    });
+
+    it('is true when stdout is not a TTY', async () => {
+      process.stdout.isTTY = false;
+      expect(await evaluateCondition({ type: 'no_tty' })).toBe(true);
+    });
+
+    it('is false when stdout is a TTY', async () => {
+      process.stdout.isTTY = true;
+      expect(await evaluateCondition({ type: 'no_tty' })).toBe(false);
+    });
+  });
+
   describe('anyOf', () => {
     it('is true when at least one child is true', async () => {
       vi.stubEnv('B', '1');

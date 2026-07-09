@@ -5,6 +5,8 @@ import mockFs from 'mock-fs';
 vi.setConfig({ testTimeout: 6 * 60 * 1000 });
 
 describe('determineAgent', () => {
+  const originalIsTTY = process.stdout.isTTY;
+
   beforeEach(() => {
     vi.unstubAllEnvs();
     vi.stubEnv('AI_AGENT', '');
@@ -18,6 +20,10 @@ describe('determineAgent', () => {
     vi.stubEnv('ANTIGRAVITY_AGENT', '');
     vi.stubEnv('AUGMENT_AGENT', '');
     vi.stubEnv('OPENCODE_CLIENT', '');
+    vi.stubEnv('OPENCODE', '');
+    vi.stubEnv('GOOSE_PROVIDER', '');
+    vi.stubEnv('JUNIE_DATA', '');
+    vi.stubEnv('JUNIE_SHIM_PATH', '');
     vi.stubEnv('CLAUDECODE', '');
     vi.stubEnv('CLAUDE_CODE', '');
     vi.stubEnv('CLAUDE_CODE_IS_COWORK', '');
@@ -25,10 +31,15 @@ describe('determineAgent', () => {
     vi.stubEnv('COPILOT_MODEL', '');
     vi.stubEnv('COPILOT_ALLOW_ALL', '');
     vi.stubEnv('COPILOT_GITHUB_TOKEN', '');
+    // PATH and TERM_PROGRAM are neutralized so a stray `.pi/agent` segment or
+    // a `kiro` terminal in the real environment can't leak into detection.
+    vi.stubEnv('PATH', '/usr/bin');
+    vi.stubEnv('TERM_PROGRAM', '');
   });
 
   afterEach(() => {
     vi.unstubAllEnvs();
+    process.stdout.isTTY = originalIsTTY;
     mockFs.restore();
   });
 
@@ -316,6 +327,140 @@ describe('determineAgent', () => {
           isAgent: true,
           agent: { name: KNOWN_AGENTS.OPENCODE },
         });
+      });
+    });
+
+    describe('OPENCODE set', () => {
+      beforeEach(() => {
+        vi.stubEnv('OPENCODE', '1');
+      });
+
+      it('detects opencode', async () => {
+        const result = await determineAgent();
+        expect(result).toEqual({
+          isAgent: true,
+          agent: { name: KNOWN_AGENTS.OPENCODE },
+        });
+      });
+    });
+  });
+
+  describe('goose detection', () => {
+    describe('GOOSE_PROVIDER not set', () => {
+      it('returns no agent', async () => {
+        const result = await determineAgent();
+        expect(result).toEqual({ isAgent: false });
+      });
+    });
+
+    describe('GOOSE_PROVIDER set', () => {
+      beforeEach(() => {
+        vi.stubEnv('GOOSE_PROVIDER', 'anthropic');
+      });
+
+      it('detects goose', async () => {
+        const result = await determineAgent();
+        expect(result).toEqual({
+          isAgent: true,
+          agent: { name: KNOWN_AGENTS.GOOSE },
+        });
+      });
+    });
+  });
+
+  describe('junie detection', () => {
+    describe('neither JUNIE var set', () => {
+      it('returns no agent', async () => {
+        const result = await determineAgent();
+        expect(result).toEqual({ isAgent: false });
+      });
+    });
+
+    describe('JUNIE_DATA set', () => {
+      beforeEach(() => {
+        vi.stubEnv('JUNIE_DATA', '/tmp/junie');
+      });
+
+      it('detects junie', async () => {
+        const result = await determineAgent();
+        expect(result).toEqual({
+          isAgent: true,
+          agent: { name: KNOWN_AGENTS.JUNIE },
+        });
+      });
+    });
+
+    describe('JUNIE_SHIM_PATH set', () => {
+      beforeEach(() => {
+        vi.stubEnv('JUNIE_SHIM_PATH', '/tmp/junie/shim');
+      });
+
+      it('detects junie', async () => {
+        const result = await determineAgent();
+        expect(result).toEqual({
+          isAgent: true,
+          agent: { name: KNOWN_AGENTS.JUNIE },
+        });
+      });
+    });
+  });
+
+  describe('pi detection', () => {
+    describe('PATH has no .pi/agent segment', () => {
+      it('returns no agent', async () => {
+        const result = await determineAgent();
+        expect(result).toEqual({ isAgent: false });
+      });
+    });
+
+    describe('PATH contains a .pi/agent segment', () => {
+      beforeEach(() => {
+        vi.stubEnv('PATH', '/usr/bin:/home/me/.pi/agent/bin');
+      });
+
+      it('detects pi', async () => {
+        const result = await determineAgent();
+        expect(result).toEqual({
+          isAgent: true,
+          agent: { name: KNOWN_AGENTS.PI },
+        });
+      });
+    });
+  });
+
+  describe('kiro detection', () => {
+    describe('TERM_PROGRAM is not kiro', () => {
+      it('returns no agent', async () => {
+        process.stdout.isTTY = false;
+        const result = await determineAgent();
+        expect(result).toEqual({ isAgent: false });
+      });
+    });
+
+    describe('TERM_PROGRAM is kiro without a TTY', () => {
+      beforeEach(() => {
+        vi.stubEnv('TERM_PROGRAM', 'kiro');
+        process.stdout.isTTY = false;
+      });
+
+      it('detects kiro', async () => {
+        const result = await determineAgent();
+        expect(result).toEqual({
+          isAgent: true,
+          agent: { name: KNOWN_AGENTS.KIRO },
+        });
+      });
+    });
+
+    describe('TERM_PROGRAM is kiro with a TTY (human at the IDE terminal)', () => {
+      beforeEach(() => {
+        vi.stubEnv('TERM_PROGRAM', 'kiro');
+        process.stdout.isTTY = true;
+      });
+
+      it('does not detect kiro', async () => {
+        const result = await determineAgent();
+        expect(result).toEqual({ isAgent: false });
       });
     });
   });

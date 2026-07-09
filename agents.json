@@ -68,7 +68,44 @@
       "name": "opencode",
       "match": {
         "type": "anyOf",
-        "conditions": [{ "type": "env_set", "name": "OPENCODE_CLIENT" }]
+        "conditions": [
+          { "type": "env_set", "name": "OPENCODE_CLIENT" },
+          { "type": "env_set", "name": "OPENCODE" }
+        ]
+      }
+    },
+    {
+      "key": "GOOSE",
+      "name": "goose",
+      "match": {
+        "type": "anyOf",
+        "conditions": [{ "type": "env_set", "name": "GOOSE_PROVIDER" }]
+      }
+    },
+    {
+      "key": "JUNIE",
+      "name": "junie",
+      "match": {
+        "type": "anyOf",
+        "conditions": [
+          { "type": "env_set", "name": "JUNIE_DATA" },
+          { "type": "env_set", "name": "JUNIE_SHIM_PATH" }
+        ]
+      }
+    },
+    {
+      "key": "PI",
+      "name": "pi",
+      "description": "Matches when the PATH contains a '.pi/agent' (or '.pi\\\\agent') segment.",
+      "match": {
+        "type": "anyOf",
+        "conditions": [
+          {
+            "type": "env_matches",
+            "name": "PATH",
+            "pattern": "\\.pi[\\\\/]agent"
+          }
+        ]
       }
     },
     {
@@ -117,6 +154,18 @@
           { "type": "env_set", "name": "COPILOT_MODEL" },
           { "type": "env_set", "name": "COPILOT_ALLOW_ALL" },
           { "type": "env_set", "name": "COPILOT_GITHUB_TOKEN" }
+        ]
+      }
+    },
+    {
+      "key": "KIRO",
+      "name": "kiro",
+      "description": "AWS Kiro. TERM_PROGRAM=kiro is set by both the IDE terminal and the CLI agent, so gate on no_tty to avoid misdetecting a human at the integrated terminal.",
+      "match": {
+        "type": "allOf",
+        "conditions": [
+          { "type": "env_matches", "name": "TERM_PROGRAM", "pattern": "kiro" },
+          { "type": "no_tty" }
         ]
       }
     },

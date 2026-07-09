@@ -45,6 +45,10 @@ This package can detect the following AI agents and development environments:
 - **Antigravity** (Google DeepMind)
 - **Augment**
 - **OpenCode**
+- **Goose** (Block)
+- **Junie** (JetBrains)
+- **Kiro** (AWS)
+- **Pi**
 - **GitHub Copilot**
 - **Replit**
 - **Custom agents** (via the `AI_AGENT` environment variable)

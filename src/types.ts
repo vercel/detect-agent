@@ -44,9 +44,17 @@ interface EnvValueCondition {
   name: string;
   value: string;
 }
+interface EnvMatchesCondition {
+  type: 'env_matches';
+  name: string;
+  pattern: string;
+}
 interface FileExistsCondition {
   type: 'file_exists';
   path: string;
+}
+interface NoTtyCondition {
+  type: 'no_tty';
 }
 interface AnyOfCondition {
   type: 'anyOf';
@@ -59,7 +67,9 @@ interface AllOfCondition {
 export type Condition =
   | EnvSetCondition
   | EnvValueCondition
+  | EnvMatchesCondition
   | FileExistsCondition
+  | NoTtyCondition
   | AnyOfCondition
   | AllOfCondition;
 
