@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GH_TOKEN_PULL_REQUESTS }}
+          token: ${{ github.token }}
 
       - uses: pnpm/action-setup@v4
 
@@ -44,5 +44,5 @@ jobs:
           commit: 'chore: update package versions'
           title: 'chore: update package versions'
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN_PULL_REQUESTS }}
+          GITHUB_TOKEN: ${{ github.token }}
           NPM_CONFIG_PROVENANCE: true
