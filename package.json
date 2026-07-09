@@ -1,0 +1,69 @@
+{
+  "name": "detect-agent",
+  "version": "1.0.0",
+  "description": "Detect if code is running in an AI agent or automated development environment",
+  "keywords": [
+    "ai",
+    "agent",
+    "detection",
+    "environment",
+    "cursor",
+    "claude",
+    "devin",
+    "automation",
+    "ai-agent"
+  ],
+  "license": "Apache-2.0",
+  "author": "Vercel",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/vercel/detect-agent#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vercel/detect-agent.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vercel/detect-agent/issues"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "type-check": "tsc --noEmit",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check"
+  },
+  "files": [
+    "dist",
+    "agents.json",
+    "agents.schema.json",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "devDependencies": {
+    "@types/mock-fs": "4.13.4",
+    "@types/node": "^22.10.0",
+    "mock-fs": "5.5.0",
+    "oxfmt": "^0.58.0",
+    "oxlint": "^1.73.0",
+    "tsup": "^8.3.5",
+    "typescript": "5.9.3",
+    "vite": "^5.1.6",
+    "vitest": "^2.0.1"
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/vercel/detect-agent/agents.schema.json",
+  "title": "Agent detection specification",
+  "description": "Language-agnostic rules for detecting AI agents from environment variables and filesystem markers.\n\nEvaluation model (first match wins):\n1. AI_AGENT pass: read the variable named by `aiAgentVar` and trim it. If non-empty, the trimmed value is emitted verbatim as the agent name.\n2. Detection pass: evaluate `agents` in array order. The first agent whose `match` condition is satisfied wins.\n\nConditions form a tree: `anyOf`/`allOf` are combinators over child conditions (logical OR/AND), and `env_set`/`env_value`/`file_exists` are leaves. An empty `anyOf` never matches; an empty `allOf` always matches.",
+  "type": "object",
+  "required": ["version", "aiAgentVar", "agents"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "version": {
+      "type": "integer",
+      "description": "Spec format version. Bump on breaking structural changes.",
+      "minimum": 1
+    },
+    "description": { "type": "string" },
+    "aiAgentVar": {
+      "type": "string",
+      "description": "Environment variable whose trimmed value, when non-empty, takes highest priority and is emitted verbatim as the agent name.",
+      "default": "AI_AGENT"
+    },
+    "agents": {
+      "type": "array",
+      "description": "Known agents, evaluated top to bottom. Order matters: place more specific agents before more general ones (e.g. cowork before claude).",
+      "items": { "$ref": "#/definitions/agent" }
+    }
+  },
+  "definitions": {
+    "agent": {
+      "type": "object",
+      "required": ["key", "name", "match"],
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": "Stable identifier, conventionally UPPER_SNAKE_CASE, suitable for use as a programmatic constant.",
+          "pattern": "^[A-Z][A-Z0-9_]*$"
+        },
+        "name": {
+          "type": "string",
+          "description": "Canonical, kebab-case agent name emitted when this agent is detected."
+        },
+        "description": { "type": "string" },
+        "match": {
+          "description": "The condition that detects this agent. Always a combinator (`anyOf`/`allOf`) so every agent's match has a uniform `conditions` array; wrap a single leaf in `anyOf`.",
+          "oneOf": [
+            { "$ref": "#/definitions/anyOf" },
+            { "$ref": "#/definitions/allOf" }
+          ]
+        }
+      }
+    },
+    "condition": {
+      "oneOf": [
+        { "$ref": "#/definitions/anyOf" },
+        { "$ref": "#/definitions/allOf" },
+        { "$ref": "#/definitions/envSet" },
+        { "$ref": "#/definitions/envValue" },
+        { "$ref": "#/definitions/fileExists" }
+      ]
+    },
+    "anyOf": {
+      "type": "object",
+      "description": "Combinator: matches when ANY child condition matches (logical OR). An empty list never matches.",
+      "required": ["type", "conditions"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "const": "anyOf" },
+        "conditions": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/condition" }
+        }
+      }
+    },
+    "allOf": {
+      "type": "object",
+      "description": "Combinator: matches when ALL child conditions match (logical AND). An empty list always matches.",
+      "required": ["type", "conditions"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "const": "allOf" },
+        "conditions": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/condition" }
+        }
+      }
+    },
+    "envSet": {
+      "type": "object",
+      "description": "Leaf: matches when the named environment variable is set and non-empty.",
+      "required": ["type", "name"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "const": "env_set" },
+        "name": { "type": "string" }
+      }
+    },
+    "envValue": {
+      "type": "object",
+      "description": "Leaf: matches when the named environment variable exactly equals `value`.",
+      "required": ["type", "name", "value"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "const": "env_value" },
+        "name": { "type": "string" },
+        "value": { "type": "string" }
+      }
+    },
+    "fileExists": {
+      "type": "object",
+      "description": "Leaf: matches when the given filesystem path exists.",
+      "required": ["type", "path"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "const": "file_exists" },
+        "path": { "type": "string" }
+      }
+    }
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "$schema": "./agents.schema.json",
+  "version": 1,
+  "description": "Language-agnostic specification for detecting AI agents and automated development environments. Agents are evaluated in array order; the first agent whose `match` condition is satisfied wins. Every agent's `match` is a combinator (`anyOf`/`allOf`) whose `conditions` are evaluated as a tree: combinators nest, and `env_set`/`env_value`/`file_exists` are leaf checks. See agents.schema.json for the full structure.",
+  "aiAgentVar": "AI_AGENT",
+  "agents": [
+    {
+      "key": "CURSOR",
+      "name": "cursor",
+      "match": {
+        "type": "anyOf",
+        "conditions": [{ "type": "env_set", "name": "CURSOR_TRACE_ID" }]
+      }
+    },
+    {
+      "key": "CURSOR_CLI",
+      "name": "cursor-cli",
+      "match": {
+        "type": "anyOf",
+        "conditions": [
+          { "type": "env_set", "name": "CURSOR_AGENT" },
+          {
+            "type": "env_value",
+            "name": "CURSOR_EXTENSION_HOST_ROLE",
+            "value": "agent-exec"
+          }
+        ]
+      }
+    },
+    {
+      "key": "GEMINI",
+      "name": "gemini",
+      "match": {
+        "type": "anyOf",
+        "conditions": [{ "type": "env_set", "name": "GEMINI_CLI" }]
+      }
+    },
+    {
+      "key": "CODEX",
+      "name": "codex",
+      "match": {
+        "type": "anyOf",
+        "conditions": [
+          { "type": "env_set", "name": "CODEX_SANDBOX" },
+          { "type": "env_set", "name": "CODEX_CI" },
+          { "type": "env_set", "name": "CODEX_THREAD_ID" }
+        ]
+      }
+    },
+    {
+      "key": "ANTIGRAVITY",
+      "name": "antigravity",
+      "match": {
+        "type": "anyOf",
+        "conditions": [{ "type": "env_set", "name": "ANTIGRAVITY_AGENT" }]
+      }
+    },
+    {
+      "key": "AUGMENT_CLI",
+      "name": "augment-cli",
+      "match": {
+        "type": "anyOf",
+        "conditions": [{ "type": "env_set", "name": "AUGMENT_AGENT" }]
+      }
+    },
+    {
+      "key": "OPENCODE",
+      "name": "opencode",
+      "match": {
+        "type": "anyOf",
+        "conditions": [{ "type": "env_set", "name": "OPENCODE_CLIENT" }]
+      }
+    },
+    {
+      "key": "COWORK",
+      "name": "cowork",
+      "description": "Claude Cowork. Evaluated before `claude` so the more specific COWORK marker wins. Requires CLAUDE_CODE_IS_COWORK plus a Claude Code marker.",
+      "match": {
+        "type": "allOf",
+        "conditions": [
+          { "type": "env_set", "name": "CLAUDE_CODE_IS_COWORK" },
+          {
+            "type": "anyOf",
+            "conditions": [
+              { "type": "env_set", "name": "CLAUDECODE" },
+              { "type": "env_set", "name": "CLAUDE_CODE" }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "key": "CLAUDE",
+      "name": "claude",
+      "match": {
+        "type": "anyOf",
+        "conditions": [
+          { "type": "env_set", "name": "CLAUDECODE" },
+          { "type": "env_set", "name": "CLAUDE_CODE" }
+        ]
+      }
+    },
+    {
+      "key": "REPLIT",
+      "name": "replit",
+      "match": {
+        "type": "anyOf",
+        "conditions": [{ "type": "env_set", "name": "REPL_ID" }]
+      }
+    },
+    {
+      "key": "GITHUB_COPILOT",
+      "name": "github-copilot",
+      "match": {
+        "type": "anyOf",
+        "conditions": [
+          { "type": "env_set", "name": "COPILOT_MODEL" },
+          { "type": "env_set", "name": "COPILOT_ALLOW_ALL" },
+          { "type": "env_set", "name": "COPILOT_GITHUB_TOKEN" }
+        ]
+      }
+    },
+    {
+      "key": "DEVIN",
+      "name": "devin",
+      "match": {
+        "type": "anyOf",
+        "conditions": [{ "type": "file_exists", "path": "/opt/.devin" }]
+      }
+    }
+  ]
+}
