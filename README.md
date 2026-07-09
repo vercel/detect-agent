@@ -21,6 +21,17 @@ if (isAgent) {
 }
 ```
 
+## Agent Definitions
+
+The agent detection rules live in [`agents.json`](https://raw.githubusercontent.com/vercel/detect-agent/main/agents.json), validated against [`agents.schema.json`](https://raw.githubusercontent.com/vercel/detect-agent/main/agents.schema.json).
+
+> [!NOTE]
+> You can use these definitions two ways: install the [npm package](https://www.npmjs.com/package/detect-agent) for a ready-to-use API, **or** consume the JSON file directly from GitHub if you're not in a JavaScript environment or want to build your own detection logic:
+>
+> ```
+> https://raw.githubusercontent.com/vercel/detect-agent/main/agents.json
+> ```
+
 ## Supported Agents
 
 This package can detect the following AI agents and development environments:
