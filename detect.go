@@ -1,9 +1,18 @@
 package detectagent
 
 import (
+	"errors"
 	"os"
 	"strings"
 )
+
+// ErrAgentNotFound is returned by DetermineAgent when the process is not
+// running inside a known AI agent environment.
+var ErrAgentNotFound = errors.New("agent not found")
+
+type AgentDetails struct {
+	Name string
+}
 
 // DetermineAgent inspects the environment and returns which AI agent is
 // running, if any. AI_AGENT takes highest priority; after that the specs in

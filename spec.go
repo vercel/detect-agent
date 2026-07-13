@@ -8,6 +8,12 @@ import (
 //go:embed agents.json
 var agentsJSON []byte
 
+type AgentSpec struct {
+	Key   string
+	Name  string
+	Match Condition
+}
+
 type agentsFile struct {
 	AIAgentVar string      `json:"aiAgentVar"`
 	Agents     []agentJSON `json:"agents"`
