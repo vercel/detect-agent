@@ -95,15 +95,12 @@ func TestDetermineAgent(t *testing.T) {
 			}
 			t.Cleanup(func() { isTTYFn = orig })
 
-			for k, v := range tc.Env {
-				t.Setenv(k, v)
+			if len(tc.Files) > 0 {
+				t.Fatal("file-system fixtures are not supported in Go tests; set skipGo: true")
 			}
 
-			for _, path := range tc.Files {
-				if err := os.MkdirAll(path, 0755); err != nil {
-					t.Fatalf("failed to create %s: %v", path, err)
-				}
-				t.Cleanup(func() { os.RemoveAll(path) })
+			for k, v := range tc.Env {
+				t.Setenv(k, v)
 			}
 
 			agent, err := DetermineAgent()
