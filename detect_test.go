@@ -87,7 +87,7 @@ func TestDetermineAgent(t *testing.T) {
 				t.Setenv(k, v)
 			}
 
-			agent, err := DetermineAgent()
+			agent, err := Detect()
 
 			wantName := tc.ExpectedName
 			if tc.ExpectedAgentKey != "" {

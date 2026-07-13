@@ -39,7 +39,7 @@ import (
     detectagent "github.com/vercel/detect-agent"
 )
 
-agent, err := detectagent.DetermineAgent()
+agent, err := detectagent.Detect()
 if errors.Is(err, detectagent.ErrAgentNotFound) {
     // not running inside an agent
 } else if err != nil {

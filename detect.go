@@ -14,11 +14,11 @@ type AgentDetails struct {
 	Name string
 }
 
-// DetermineAgent inspects the environment and returns which AI agent is
-// running, if any. AI_AGENT takes highest priority; after that the specs in
-// agentSpecs are evaluated in order and the first match wins.
+// Detect inspects the environment and returns which AI agent is running, if
+// any. AI_AGENT takes highest priority; after that the specs in agentSpecs are
+// evaluated in order and the first match wins.
 // Returns ErrAgentNotFound when not running inside a known agent environment.
-func DetermineAgent() (*AgentDetails, error) {
+func Detect() (*AgentDetails, error) {
 	if name := resolveAIAgentVar(); name != "" {
 		return &AgentDetails{Name: name}, nil
 	}
