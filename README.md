@@ -34,15 +34,18 @@ if (isAgent) {
 **Go**
 
 ```go
-import detectagent "github.com/vercel/detect-agent"
+import (
+    "errors"
+    detectagent "github.com/vercel/detect-agent"
+)
 
-result, err := detectagent.DetermineAgent()
-if err != nil {
+agent, err := detectagent.DetermineAgent()
+if errors.Is(err, detectagent.ErrAgentNotFound) {
+    // not running inside an agent
+} else if err != nil {
     log.Fatal(err)
-}
-
-if result.IsAgent {
-    fmt.Printf("Running in %s environment\n", result.Agent.Name)
+} else {
+    fmt.Printf("Running in %s environment\n", agent.Name)
 }
 ```
 

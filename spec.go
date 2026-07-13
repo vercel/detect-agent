@@ -1,6 +1,12 @@
 package detectagent
 
-import "encoding/json"
+import (
+	_ "embed"
+	"encoding/json"
+)
+
+//go:embed agents.json
+var agentsJSON []byte
 
 type agentsFile struct {
 	AIAgentVar string      `json:"aiAgentVar"`
@@ -23,7 +29,7 @@ var (
 
 func init() {
 	var f agentsFile
-	if err := json.Unmarshal(AgentsJSON, &f); err != nil {
+	if err := json.Unmarshal(agentsJSON, &f); err != nil {
 		panic("detect-agent: failed to parse agents.json: " + err.Error())
 	}
 

@@ -8,22 +8,23 @@ import (
 // DetermineAgent inspects the environment and returns which AI agent is
 // running, if any. AI_AGENT takes highest priority; after that the specs in
 // agentSpecs are evaluated in order and the first match wins.
-func DetermineAgent() (AgentResult, error) {
+// Returns ErrAgentNotFound when not running inside a known agent environment.
+func DetermineAgent() (*AgentDetails, error) {
 	if name := resolveAIAgentVar(); name != "" {
-		return AgentResult{IsAgent: true, Agent: &AgentDetails{Name: name}}, nil
+		return &AgentDetails{Name: name}, nil
 	}
 
 	for _, spec := range agentSpecs {
 		matched, err := EvaluateCondition(spec.Match)
 		if err != nil {
-			return AgentResult{}, err
+			return nil, err
 		}
 		if matched {
-			return AgentResult{IsAgent: true, Agent: &AgentDetails{Name: spec.Name}}, nil
+			return &AgentDetails{Name: spec.Name}, nil
 		}
 	}
 
-	return AgentResult{IsAgent: false}, nil
+	return nil, ErrAgentNotFound
 }
 
 func resolveAIAgentVar() string {

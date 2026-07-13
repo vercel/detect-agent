@@ -2,6 +2,7 @@ package detectagent
 
 import (
 	"encoding/json"
+	"errors"
 	"os"
 	"testing"
 )
@@ -37,35 +38,35 @@ func clearAgentEnvs(t *testing.T) {
 	t.Setenv("PATH", "/usr/bin")
 }
 
-func assertAgentResult(t *testing.T, got AgentResult, wantIsAgent bool, wantName string) {
+func assertAgentResult(t *testing.T, got *AgentDetails, err error, wantIsAgent bool, wantName string) {
 	t.Helper()
-	if got.IsAgent != wantIsAgent {
-		t.Errorf("IsAgent: got %v, want %v", got.IsAgent, wantIsAgent)
-	}
 	if wantIsAgent {
-		if got.Agent == nil {
-			t.Fatal("Agent is nil but expected non-nil")
+		if err != nil {
+			t.Fatalf("unexpected error: %v", err)
 		}
-		if got.Agent.Name != wantName {
-			t.Errorf("Agent.Name: got %q, want %q", got.Agent.Name, wantName)
+		if got == nil {
+			t.Fatal("expected AgentDetails, got nil")
+		}
+		if got.Name != wantName {
+			t.Errorf("Name: got %q, want %q", got.Name, wantName)
 		}
 	} else {
-		if got.Agent != nil {
-			t.Errorf("expected Agent nil, got %+v", got.Agent)
+		if !errors.Is(err, ErrAgentNotFound) {
+			t.Errorf("expected ErrAgentNotFound, got err=%v agent=%v", err, got)
 		}
 	}
 }
 
 func TestDetermineAgent(t *testing.T) {
 	type testCase struct {
-		Name            string            `json:"name"`
-		Env             map[string]string `json:"env"`
-		TTY             *bool             `json:"tty"`
-		Files           []string          `json:"files"`
-		SkipGo          bool              `json:"skipGo"`
-		ExpectedIsAgent bool              `json:"expectedIsAgent"`
-		ExpectedAgentKey string           `json:"expectedAgentKey"`
-		ExpectedName    string            `json:"expectedName"`
+		Name             string            `json:"name"`
+		Env              map[string]string `json:"env"`
+		TTY              *bool             `json:"tty"`
+		Files            []string          `json:"files"`
+		SkipGo           bool              `json:"skipGo"`
+		ExpectedIsAgent  bool              `json:"expectedIsAgent"`
+		ExpectedAgentKey string            `json:"expectedAgentKey"`
+		ExpectedName     string            `json:"expectedName"`
 	}
 
 	data, err := os.ReadFile("testcases.json")
@@ -105,16 +106,13 @@ func TestDetermineAgent(t *testing.T) {
 				t.Cleanup(func() { os.RemoveAll(path) })
 			}
 
-			result, err := DetermineAgent()
-			if err != nil {
-				t.Fatal(err)
-			}
+			agent, err := DetermineAgent()
 
 			wantName := tc.ExpectedName
 			if tc.ExpectedAgentKey != "" {
 				wantName = KnownAgents[tc.ExpectedAgentKey]
 			}
-			assertAgentResult(t, result, tc.ExpectedIsAgent, wantName)
+			assertAgentResult(t, agent, err, tc.ExpectedIsAgent, wantName)
 		})
 	}
 }

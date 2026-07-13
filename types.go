@@ -1,5 +1,11 @@
 package detectagent
 
+import "errors"
+
+// ErrAgentNotFound is returned by DetermineAgent when the process is not
+// running inside a known AI agent environment.
+var ErrAgentNotFound = errors.New("agent not found")
+
 // Condition is a node in a condition tree loaded from agents.json.
 type Condition struct {
 	Type       string      `json:"type"`
@@ -18,9 +24,4 @@ type AgentSpec struct {
 
 type AgentDetails struct {
 	Name string
-}
-
-type AgentResult struct {
-	IsAgent bool
-	Agent   *AgentDetails
 }
