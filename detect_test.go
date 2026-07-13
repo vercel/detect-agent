@@ -61,7 +61,7 @@ func TestDetermineAgent(t *testing.T) {
 	type testCase struct {
 		Name             string            `json:"name"`
 		Env              map[string]string `json:"env"`
-		TTY              *bool             `json:"tty"`
+		TTY              bool              `json:"tty"`
 		Files            []string          `json:"files"`
 		SkipGo           bool              `json:"skipGo"`
 		ExpectedIsAgent  bool              `json:"expectedIsAgent"`
@@ -79,7 +79,6 @@ func TestDetermineAgent(t *testing.T) {
 	}
 
 	for _, tc := range cases {
-		tc := tc
 		if tc.SkipGo {
 			continue
 		}
@@ -87,12 +86,7 @@ func TestDetermineAgent(t *testing.T) {
 			clearAgentEnvs(t)
 
 			orig := isTTYFn
-			if tc.TTY != nil {
-				val := *tc.TTY
-				isTTYFn = func() bool { return val }
-			} else {
-				isTTYFn = func() bool { return false }
-			}
+			isTTYFn = func() bool { return tc.TTY }
 			t.Cleanup(func() { isTTYFn = orig })
 
 			if len(tc.Files) > 0 {
