@@ -1,10 +1,6 @@
 package detectagent
 
-import (
-	"encoding/json"
-
-	root "github.com/vercel/detect-agent"
-)
+import "encoding/json"
 
 type agentsFile struct {
 	AIAgentVar string      `json:"aiAgentVar"`
@@ -27,7 +23,7 @@ var (
 
 func init() {
 	var f agentsFile
-	if err := json.Unmarshal(root.AgentsJSON, &f); err != nil {
+	if err := json.Unmarshal(AgentsJSON, &f); err != nil {
 		panic("detect-agent: failed to parse agents.json: " + err.Error())
 	}
 
