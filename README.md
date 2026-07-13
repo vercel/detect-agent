@@ -4,11 +4,21 @@ A lightweight utility for detecting if code is being executed by an AI agent or 
 
 ## Installation
 
+**JavaScript / TypeScript**
+
 ```bash
 npm install detect-agent
 ```
 
+**Go**
+
+```bash
+go get github.com/vercel/detect-agent
+```
+
 ## Usage
+
+**JavaScript / TypeScript**
 
 ```typescript
 import { determineAgent } from 'detect-agent';
@@ -18,6 +28,21 @@ const { isAgent, agent } = await determineAgent();
 if (isAgent) {
   console.log(`Running in ${agent.name} environment`);
   // Adapt behavior for AI agent context
+}
+```
+
+**Go**
+
+```go
+import detectagent "github.com/vercel/detect-agent"
+
+result, err := detectagent.DetermineAgent()
+if err != nil {
+    log.Fatal(err)
+}
+
+if result.IsAgent {
+    fmt.Printf("Running in %s environment\n", result.Agent.Name)
 }
 ```
 
@@ -134,7 +159,7 @@ We welcome contributions!
 To add support for a new AI agent:
 
 1. Add the agent's detection rule to [`agents.json`](./agents.json), following the structure defined in [`agents.schema.json`](./agents.schema.json). Agents are evaluated in array order — the first match wins, so place more specific rules before more general ones.
-2. Add test cases in `src/determine-agent.test.ts`.
+2. Add test cases in `src/determine-agent.test.ts` (TypeScript) and `detect_test.go` / `evaluate_condition_test.go` (Go). Go test files live alongside the source at the repo root.
 3. Add the agent to the **Supported Agents** list above.
 
 ## Links
