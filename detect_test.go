@@ -1,15 +1,18 @@
 package detectagent
 
 import (
+	_ "embed"
 	"encoding/json"
 	"errors"
-	"os"
 	"testing"
 )
 
+//go:embed testcases.json
+var testCasesJSON []byte
+
 func clearAgentEnvs(t *testing.T) {
 	t.Helper()
-	vars := []string{
+	for _, v := range []string{
 		"AI_AGENT",
 		"CURSOR_TRACE_ID", "CURSOR_AGENT", "CURSOR_EXTENSION_HOST_ROLE",
 		"GEMINI_CLI",
@@ -23,17 +26,8 @@ func clearAgentEnvs(t *testing.T) {
 		"REPL_ID",
 		"COPILOT_MODEL", "COPILOT_ALLOW_ALL", "COPILOT_GITHUB_TOKEN",
 		"TERM_PROGRAM",
-	}
-	for _, v := range vars {
-		orig, hadOrig := os.LookupEnv(v)
-		os.Unsetenv(v)
-		t.Cleanup(func() {
-			if hadOrig {
-				os.Setenv(v, orig)
-			} else {
-				os.Unsetenv(v)
-			}
-		})
+	} {
+		t.Setenv(v, "")
 	}
 	t.Setenv("PATH", "/usr/bin")
 }
@@ -69,12 +63,8 @@ func TestDetermineAgent(t *testing.T) {
 		ExpectedName     string            `json:"expectedName"`
 	}
 
-	data, err := os.ReadFile("testcases.json")
-	if err != nil {
-		t.Fatal(err)
-	}
 	var cases []testCase
-	if err := json.Unmarshal(data, &cases); err != nil {
+	if err := json.Unmarshal(testCasesJSON, &cases); err != nil {
 		t.Fatal(err)
 	}
 
