@@ -1,0 +1,58 @@
+[
+  { "name": "no agent when nothing set", "env": {}, "expectedIsAgent": false },
+
+  { "name": "detects custom agent from AI_AGENT", "env": { "AI_AGENT": "custom-agent" }, "expectedIsAgent": true, "expectedName": "custom-agent" },
+
+  { "name": "detects github copilot from AI_AGENT=github-copilot", "env": { "AI_AGENT": "github-copilot" }, "expectedIsAgent": true, "expectedAgentKey": "GITHUB_COPILOT" },
+  { "name": "detects github copilot from COPILOT_MODEL", "env": { "COPILOT_MODEL": "gpt-5" }, "expectedIsAgent": true, "expectedAgentKey": "GITHUB_COPILOT" },
+  { "name": "detects github copilot from COPILOT_ALLOW_ALL", "env": { "COPILOT_ALLOW_ALL": "true" }, "expectedIsAgent": true, "expectedAgentKey": "GITHUB_COPILOT" },
+  { "name": "detects github copilot from COPILOT_GITHUB_TOKEN", "env": { "COPILOT_GITHUB_TOKEN": "ghp_xxx" }, "expectedIsAgent": true, "expectedAgentKey": "GITHUB_COPILOT" },
+
+  { "name": "detects cursor from CURSOR_TRACE_ID", "env": { "CURSOR_TRACE_ID": "some-uuid" }, "expectedIsAgent": true, "expectedAgentKey": "CURSOR" },
+
+  { "name": "detects cursor cli from CURSOR_AGENT", "env": { "CURSOR_AGENT": "1" }, "expectedIsAgent": true, "expectedAgentKey": "CURSOR_CLI" },
+  { "name": "detects cursor cli from CURSOR_EXTENSION_HOST_ROLE=agent-exec", "env": { "CURSOR_EXTENSION_HOST_ROLE": "agent-exec" }, "expectedIsAgent": true, "expectedAgentKey": "CURSOR_CLI" },
+
+  { "name": "detects gemini from GEMINI_CLI", "env": { "GEMINI_CLI": "1" }, "expectedIsAgent": true, "expectedAgentKey": "GEMINI" },
+
+  { "name": "detects codex from CODEX_SANDBOX", "env": { "CODEX_SANDBOX": "seatbelt" }, "expectedIsAgent": true, "expectedAgentKey": "CODEX" },
+  { "name": "detects codex from CODEX_CI", "env": { "CODEX_CI": "1" }, "expectedIsAgent": true, "expectedAgentKey": "CODEX" },
+  { "name": "detects codex from CODEX_THREAD_ID", "env": { "CODEX_THREAD_ID": "thread-123" }, "expectedIsAgent": true, "expectedAgentKey": "CODEX" },
+
+  { "name": "detects antigravity from ANTIGRAVITY_AGENT", "env": { "ANTIGRAVITY_AGENT": "1" }, "expectedIsAgent": true, "expectedAgentKey": "ANTIGRAVITY" },
+
+  { "name": "detects augment cli from AUGMENT_AGENT", "env": { "AUGMENT_AGENT": "1" }, "expectedIsAgent": true, "expectedAgentKey": "AUGMENT_CLI" },
+
+  { "name": "detects opencode from OPENCODE_CLIENT", "env": { "OPENCODE_CLIENT": "opencode" }, "expectedIsAgent": true, "expectedAgentKey": "OPENCODE" },
+  { "name": "detects opencode from OPENCODE", "env": { "OPENCODE": "1" }, "expectedIsAgent": true, "expectedAgentKey": "OPENCODE" },
+
+  { "name": "detects goose from GOOSE_PROVIDER", "env": { "GOOSE_PROVIDER": "anthropic" }, "expectedIsAgent": true, "expectedAgentKey": "GOOSE" },
+
+  { "name": "detects junie from JUNIE_DATA", "env": { "JUNIE_DATA": "/tmp/junie" }, "expectedIsAgent": true, "expectedAgentKey": "JUNIE" },
+  { "name": "detects junie from JUNIE_SHIM_PATH", "env": { "JUNIE_SHIM_PATH": "/tmp/junie/shim" }, "expectedIsAgent": true, "expectedAgentKey": "JUNIE" },
+
+  { "name": "detects pi from PATH containing .pi/agent", "env": { "PATH": "/usr/bin:/home/me/.pi/agent/bin" }, "expectedIsAgent": true, "expectedAgentKey": "PI" },
+
+  { "name": "detects kiro when TERM_PROGRAM=kiro and no TTY", "env": { "TERM_PROGRAM": "kiro" }, "tty": false, "expectedIsAgent": true, "expectedAgentKey": "KIRO" },
+  { "name": "does not detect kiro when TERM_PROGRAM=kiro with a TTY", "env": { "TERM_PROGRAM": "kiro" }, "tty": true, "expectedIsAgent": false },
+
+  { "name": "detects claude from CLAUDE_CODE", "env": { "CLAUDE_CODE": "1" }, "expectedIsAgent": true, "expectedAgentKey": "CLAUDE" },
+  { "name": "detects claude from CLAUDECODE", "env": { "CLAUDECODE": "1" }, "expectedIsAgent": true, "expectedAgentKey": "CLAUDE" },
+
+  { "name": "detects cowork from CLAUDECODE + CLAUDE_CODE_IS_COWORK", "env": { "CLAUDECODE": "1", "CLAUDE_CODE_IS_COWORK": "1" }, "expectedIsAgent": true, "expectedAgentKey": "COWORK" },
+  { "name": "detects cowork from CLAUDE_CODE + CLAUDE_CODE_IS_COWORK", "env": { "CLAUDE_CODE": "1", "CLAUDE_CODE_IS_COWORK": "1" }, "expectedIsAgent": true, "expectedAgentKey": "COWORK" },
+  { "name": "CLAUDE_CODE_IS_COWORK alone returns no agent", "env": { "CLAUDE_CODE_IS_COWORK": "1" }, "expectedIsAgent": false },
+
+  { "name": "detects devin when /opt/.devin exists", "env": {}, "files": ["/opt/.devin"], "expectedIsAgent": true, "expectedAgentKey": "DEVIN", "skipGo": true },
+
+  { "name": "detects replit from REPL_ID", "env": { "REPL_ID": "1" }, "expectedIsAgent": true, "expectedAgentKey": "REPLIT" },
+
+  { "name": "AI_AGENT takes highest priority", "env": { "AI_AGENT": "custom-priority", "CURSOR_TRACE_ID": "some-uuid", "CURSOR_AGENT": "1", "GEMINI_CLI": "1", "CODEX_SANDBOX": "seatbelt", "ANTIGRAVITY_AGENT": "1", "AUGMENT_AGENT": "1", "OPENCODE_CLIENT": "opencode", "CLAUDE_CODE": "1", "REPL_ID": "1", "COPILOT_MODEL": "gpt-5", "COPILOT_ALLOW_ALL": "true", "COPILOT_GITHUB_TOKEN": "ghp_xxx" }, "expectedIsAgent": true, "expectedName": "custom-priority" },
+  { "name": "CURSOR_TRACE_ID takes priority over other agents", "env": { "CURSOR_TRACE_ID": "some-uuid", "CURSOR_AGENT": "1", "GEMINI_CLI": "1", "CODEX_SANDBOX": "seatbelt", "ANTIGRAVITY_AGENT": "1", "AUGMENT_AGENT": "1", "OPENCODE_CLIENT": "opencode", "CLAUDE_CODE": "1", "REPL_ID": "1", "COPILOT_MODEL": "gpt-5" }, "expectedIsAgent": true, "expectedAgentKey": "CURSOR" },
+  { "name": "CURSOR_AGENT takes priority over remaining agents", "env": { "CURSOR_AGENT": "1", "GEMINI_CLI": "1", "CODEX_SANDBOX": "seatbelt", "ANTIGRAVITY_AGENT": "1", "AUGMENT_AGENT": "1", "OPENCODE_CLIENT": "opencode", "CLAUDE_CODE": "1", "REPL_ID": "1", "COPILOT_MODEL": "gpt-5" }, "expectedIsAgent": true, "expectedAgentKey": "CURSOR_CLI" },
+
+  { "name": "empty string values return no agent", "env": { "AI_AGENT": "", "CURSOR_TRACE_ID": "" }, "expectedIsAgent": false },
+  { "name": "whitespace-only AI_AGENT returns no agent", "env": { "AI_AGENT": "   " }, "expectedIsAgent": false },
+  { "name": "special characters in AI_AGENT are preserved", "env": { "AI_AGENT": "my-custom-agent@v1.0" }, "expectedIsAgent": true, "expectedName": "my-custom-agent@v1.0" },
+  { "name": "leading and trailing whitespace in AI_AGENT is trimmed", "env": { "AI_AGENT": "  custom-agent  " }, "expectedIsAgent": true, "expectedName": "custom-agent" }
+]

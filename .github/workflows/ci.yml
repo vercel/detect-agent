@@ -6,6 +6,19 @@ on:
   pull_request:
 
 jobs:
+  check-go:
+    name: Test (Go)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Test
+        run: go test ./...
+
   check:
     name: Lint, Format & Test (Node ${{ matrix.node }})
     runs-on: ubuntu-latest
