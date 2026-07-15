@@ -36,6 +36,14 @@
       }
     },
     {
+      "key": "CLINE",
+      "name": "cline",
+      "match": {
+        "type": "anyOf",
+        "conditions": [{ "type": "env_set", "name": "CLINE_ACTIVE" }]
+      }
+    },
+    {
       "key": "CODEX",
       "name": "codex",
       "match": {
@@ -43,7 +51,8 @@
         "conditions": [
           { "type": "env_set", "name": "CODEX_SANDBOX" },
           { "type": "env_set", "name": "CODEX_CI" },
-          { "type": "env_set", "name": "CODEX_THREAD_ID" }
+          { "type": "env_set", "name": "CODEX_THREAD_ID" },
+          { "type": "env_set", "name": "CODEX_SANDBOX_NETWORK_DISABLED" }
         ]
       }
     },
@@ -52,7 +61,10 @@
       "name": "antigravity",
       "match": {
         "type": "anyOf",
-        "conditions": [{ "type": "env_set", "name": "ANTIGRAVITY_AGENT" }]
+        "conditions": [
+          { "type": "env_set", "name": "ANTIGRAVITY_AGENT" },
+          { "type": "env_set", "name": "ANTIGRAVITY_CLI_ALIAS" }
+        ]
       }
     },
     {
@@ -167,6 +179,14 @@
           { "type": "env_matches", "name": "TERM_PROGRAM", "pattern": "kiro" },
           { "type": "no_tty" }
         ]
+      }
+    },
+    {
+      "key": "OPENCLAW",
+      "name": "openclaw",
+      "match": {
+        "type": "anyOf",
+        "conditions": [{ "type": "env_set", "name": "OPENCLAW_SHELL" }]
       }
     },
     {
