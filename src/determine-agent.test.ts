@@ -9,17 +9,27 @@ type TestCase = (typeof testCases)[number];
 
 const ALL_AGENT_ENVS = [
   'AI_AGENT',
-  'CURSOR_TRACE_ID', 'CURSOR_AGENT', 'CURSOR_EXTENSION_HOST_ROLE',
+  'CURSOR_TRACE_ID',
+  'CURSOR_AGENT',
+  'CURSOR_EXTENSION_HOST_ROLE',
   'GEMINI_CLI',
-  'CODEX_SANDBOX', 'CODEX_CI', 'CODEX_THREAD_ID',
+  'CODEX_SANDBOX',
+  'CODEX_CI',
+  'CODEX_THREAD_ID',
   'ANTIGRAVITY_AGENT',
   'AUGMENT_AGENT',
-  'OPENCODE_CLIENT', 'OPENCODE',
+  'OPENCODE_CLIENT',
+  'OPENCODE',
   'GOOSE_PROVIDER',
-  'JUNIE_DATA', 'JUNIE_SHIM_PATH',
-  'CLAUDECODE', 'CLAUDE_CODE', 'CLAUDE_CODE_IS_COWORK',
+  'JUNIE_DATA',
+  'JUNIE_SHIM_PATH',
+  'CLAUDECODE',
+  'CLAUDE_CODE',
+  'CLAUDE_CODE_IS_COWORK',
   'REPL_ID',
-  'COPILOT_MODEL', 'COPILOT_ALLOW_ALL', 'COPILOT_GITHUB_TOKEN',
+  'COPILOT_MODEL',
+  'COPILOT_ALLOW_ALL',
+  'COPILOT_GITHUB_TOKEN',
   'TERM_PROGRAM',
 ];
 
@@ -51,7 +61,10 @@ describe('determineAgent', () => {
       }
 
       if (tc.files && tc.files.length > 0) {
-        const fsConfig: Record<string, ReturnType<typeof mockFs.directory>> = {};
+        const fsConfig: Record<
+          string,
+          ReturnType<typeof mockFs.directory>
+        > = {};
         for (const path of tc.files) {
           fsConfig[path] = mockFs.directory({ mode: 0o755 });
         }
@@ -67,7 +80,10 @@ describe('determineAgent', () => {
           : undefined);
 
       if (tc.expectedIsAgent) {
-        expect(result).toEqual({ isAgent: true, agent: { name: expectedName } });
+        expect(result).toEqual({
+          isAgent: true,
+          agent: { name: expectedName },
+        });
       } else {
         expect(result).toEqual({ isAgent: false });
       }

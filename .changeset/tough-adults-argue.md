@@ -1,5 +1,5 @@
 ---
-"detect-agent": minor
+'detect-agent': minor
 ---
 
 Add Go module support
