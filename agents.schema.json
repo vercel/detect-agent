@@ -21,7 +21,7 @@
     },
     "agents": {
       "type": "array",
-      "description": "Known agents, evaluated top to bottom. Order matters: place more specific agents before more general ones (e.g. cowork before claude).",
+      "description": "Known agents, evaluated top to bottom. Order matters: place more specific agents before more general ones (e.g. cowork before claude_code).",
       "items": { "$ref": "#/definitions/agent" }
     }
   },
