@@ -29,7 +29,7 @@
     },
     {
       "key": "GEMINI",
-      "name": "gemini",
+      "name": "gemini_cli",
       "match": {
         "type": "anyOf",
         "conditions": [{ "type": "env_set", "name": "GEMINI_CLI" }]
@@ -45,7 +45,7 @@
     },
     {
       "key": "CODEX",
-      "name": "codex",
+      "name": "codex_cli",
       "match": {
         "type": "anyOf",
         "conditions": [
@@ -77,7 +77,7 @@
     },
     {
       "key": "OPENCODE",
-      "name": "opencode",
+      "name": "open_code",
       "match": {
         "type": "anyOf",
         "conditions": [
@@ -123,7 +123,7 @@
     {
       "key": "COWORK",
       "name": "cowork",
-      "description": "Claude Cowork. Evaluated before `claude` so the more specific COWORK marker wins. Requires CLAUDE_CODE_IS_COWORK plus a Claude Code marker.",
+      "description": "Claude Cowork. Evaluated before `claude_code` so the more specific COWORK marker wins. Requires CLAUDE_CODE_IS_COWORK plus a Claude Code marker.",
       "match": {
         "type": "allOf",
         "conditions": [
@@ -140,7 +140,7 @@
     },
     {
       "key": "CLAUDE",
-      "name": "claude",
+      "name": "claude_code",
       "match": {
         "type": "anyOf",
         "conditions": [

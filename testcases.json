@@ -54,26 +54,26 @@
   },
 
   {
-    "name": "detects gemini from GEMINI_CLI",
+    "name": "detects gemini_cli from GEMINI_CLI",
     "env": { "GEMINI_CLI": "1" },
     "expectedIsAgent": true,
     "expectedAgentKey": "GEMINI"
   },
 
   {
-    "name": "detects codex from CODEX_SANDBOX",
+    "name": "detects codex_cli from CODEX_SANDBOX",
     "env": { "CODEX_SANDBOX": "seatbelt" },
     "expectedIsAgent": true,
     "expectedAgentKey": "CODEX"
   },
   {
-    "name": "detects codex from CODEX_CI",
+    "name": "detects codex_cli from CODEX_CI",
     "env": { "CODEX_CI": "1" },
     "expectedIsAgent": true,
     "expectedAgentKey": "CODEX"
   },
   {
-    "name": "detects codex from CODEX_THREAD_ID",
+    "name": "detects codex_cli from CODEX_THREAD_ID",
     "env": { "CODEX_THREAD_ID": "thread-123" },
     "expectedIsAgent": true,
     "expectedAgentKey": "CODEX"
@@ -94,13 +94,13 @@
   },
 
   {
-    "name": "detects opencode from OPENCODE_CLIENT",
+    "name": "detects open_code from OPENCODE_CLIENT",
     "env": { "OPENCODE_CLIENT": "opencode" },
     "expectedIsAgent": true,
     "expectedAgentKey": "OPENCODE"
   },
   {
-    "name": "detects opencode from OPENCODE",
+    "name": "detects open_code from OPENCODE",
     "env": { "OPENCODE": "1" },
     "expectedIsAgent": true,
     "expectedAgentKey": "OPENCODE"
@@ -148,13 +148,13 @@
   },
 
   {
-    "name": "detects claude from CLAUDE_CODE",
+    "name": "detects claude_code from CLAUDE_CODE",
     "env": { "CLAUDE_CODE": "1" },
     "expectedIsAgent": true,
     "expectedAgentKey": "CLAUDE"
   },
   {
-    "name": "detects claude from CLAUDECODE",
+    "name": "detects claude_code from CLAUDECODE",
     "env": { "CLAUDECODE": "1" },
     "expectedIsAgent": true,
     "expectedAgentKey": "CLAUDE"
