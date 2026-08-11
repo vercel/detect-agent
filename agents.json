@@ -28,6 +28,27 @@
       }
     },
     {
+      "key": "KIMI",
+      "name": "kimi",
+      "description": "Kimi Code plugin hooks. KIMI_CODE_HOME may be configured outside an active Kimi session, so detection uses the plugin-scoped KIMI_PLUGIN_ROOT marker.",
+      "match": {
+        "type": "anyOf",
+        "conditions": [{ "type": "env_set", "name": "KIMI_PLUGIN_ROOT" }]
+      }
+    },
+    {
+      "key": "GROK",
+      "name": "grok",
+      "description": "Grok Build plugin hooks. Evaluated before Claude Code because Grok supports Claude Code plugins and may expose compatibility markers.",
+      "match": {
+        "type": "anyOf",
+        "conditions": [
+          { "type": "env_set", "name": "GROK_PLUGIN_ROOT" },
+          { "type": "env_set", "name": "GROK_PLUGIN_DATA" }
+        ]
+      }
+    },
+    {
       "key": "GEMINI",
       "name": "gemini_cli",
       "match": {
