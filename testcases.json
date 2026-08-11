@@ -54,6 +54,34 @@
   },
 
   {
+    "name": "detects kimi from KIMI_PLUGIN_ROOT",
+    "env": { "KIMI_PLUGIN_ROOT": "/tmp/kimi-plugin" },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "KIMI"
+  },
+  {
+    "name": "does not detect kimi from KIMI_CODE_HOME alone",
+    "env": { "KIMI_CODE_HOME": "/tmp/kimi" },
+    "expectedIsAgent": false
+  },
+
+  {
+    "name": "detects grok from GROK_PLUGIN_ROOT",
+    "env": { "GROK_PLUGIN_ROOT": "/tmp/grok-plugin" },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "GROK"
+  },
+  {
+    "name": "detects grok from GROK_PLUGIN_DATA before Claude compatibility markers",
+    "env": {
+      "GROK_PLUGIN_DATA": "/tmp/grok-data",
+      "CLAUDE_CODE": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "GROK"
+  },
+
+  {
     "name": "detects gemini_cli from GEMINI_CLI",
     "env": { "GEMINI_CLI": "1" },
     "expectedIsAgent": true,
