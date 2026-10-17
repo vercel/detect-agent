@@ -142,16 +142,43 @@
   },
 
   {
-    "name": "detects junie from JUNIE_DATA",
+    "name": "ignores JUNIE_DATA without JUNIE_SHIM_PATH",
     "env": { "JUNIE_DATA": "/tmp/junie" },
-    "expectedIsAgent": true,
-    "expectedAgentKey": "JUNIE"
+    "expectedIsAgent": false
   },
   {
     "name": "detects junie from JUNIE_SHIM_PATH",
     "env": { "JUNIE_SHIM_PATH": "/tmp/junie/shim" },
     "expectedIsAgent": true,
     "expectedAgentKey": "JUNIE"
+  },
+  {
+    "name": "does not detect junie from empty JUNIE_SHIM_PATH",
+    "env": { "JUNIE_SHIM_PATH": "" },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "ignores JUNIE_DATA when JUNIE_SHIM_PATH is empty",
+    "env": { "JUNIE_DATA": "/tmp/junie", "JUNIE_SHIM_PATH": "" },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "detects junie from JUNIE_SHIM_PATH with JUNIE_DATA",
+    "env": { "JUNIE_DATA": "/tmp/junie", "JUNIE_SHIM_PATH": "/tmp/junie/shim" },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "JUNIE"
+  },
+  {
+    "name": "ignores JUNIE_DATA and falls back to cursor cli",
+    "env": { "JUNIE_DATA": "/tmp/junie", "CURSOR_AGENT": "1" },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "CURSOR_CLI"
+  },
+  {
+    "name": "keeps cursor cli priority over JUNIE_SHIM_PATH",
+    "env": { "JUNIE_SHIM_PATH": "/tmp/junie/shim", "CURSOR_AGENT": "1" },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "CURSOR_CLI"
   },
 
   {
@@ -297,5 +324,1507 @@
     "env": { "AI_AGENT": "  custom-agent  " },
     "expectedIsAgent": true,
     "expectedName": "custom-agent"
+  },
+
+  {
+    "name": "detects crush context from CRUSH",
+    "env": {
+      "CRUSH": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "CRUSH"
+  },
+  {
+    "name": "empty CRUSH does not detect a context",
+    "env": {
+      "CRUSH": ""
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "detects hermes context from HERMES_SESSION_ID",
+    "env": {
+      "HERMES_SESSION_ID": "session-test"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "HERMES"
+  },
+  {
+    "name": "empty HERMES_SESSION_ID does not detect a context",
+    "env": {
+      "HERMES_SESSION_ID": ""
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "detects hermes context from HERMES_AGENT",
+    "env": {
+      "HERMES_AGENT": "true"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "HERMES"
+  },
+  {
+    "name": "empty HERMES_AGENT does not detect a context",
+    "env": {
+      "HERMES_AGENT": ""
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "detects kilo_code context from KILOCODE_FEATURE",
+    "env": {
+      "KILOCODE_FEATURE": "shell"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "KILO_CODE"
+  },
+  {
+    "name": "empty KILOCODE_FEATURE does not detect a context",
+    "env": {
+      "KILOCODE_FEATURE": ""
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "detects trae context from TRAE_AI_SHELL_ID",
+    "env": {
+      "TRAE_AI_SHELL_ID": "shell-test"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "TRAE"
+  },
+  {
+    "name": "empty TRAE_AI_SHELL_ID does not detect a context",
+    "env": {
+      "TRAE_AI_SHELL_ID": ""
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "detects vtcode context from VTCODE",
+    "env": {
+      "VTCODE": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "VTCODE"
+  },
+  {
+    "name": "empty VTCODE does not detect a context",
+    "env": {
+      "VTCODE": ""
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "detects zed context from ZED_TERM",
+    "env": {
+      "ZED_TERM": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "ZED"
+  },
+  {
+    "name": "empty ZED_TERM does not detect a context",
+    "env": {
+      "ZED_TERM": ""
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "detects goose context from GOOSE_TERMINAL",
+    "env": {
+      "GOOSE_TERMINAL": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "GOOSE"
+  },
+  {
+    "name": "empty GOOSE_TERMINAL does not detect a context",
+    "env": {
+      "GOOSE_TERMINAL": ""
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "detects kiro context from AGENT_CONTEXT_OUT",
+    "env": {
+      "AGENT_CONTEXT_OUT": "/tmp/kiro-context"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "KIRO"
+  },
+  {
+    "name": "empty AGENT_CONTEXT_OUT does not detect a context",
+    "env": {
+      "AGENT_CONTEXT_OUT": ""
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "VTCODE='0' does not match the exact marker",
+    "env": {
+      "VTCODE": "0"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "VTCODE='true' does not match the exact marker",
+    "env": {
+      "VTCODE": "true"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "VTCODE='01' does not match the exact marker",
+    "env": {
+      "VTCODE": "01"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "VTCODE=' 1 ' does not match the exact marker",
+    "env": {
+      "VTCODE": " 1 "
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "CRUSH takes priority over inherited Cursor terminal context",
+    "env": {
+      "CRUSH": "1",
+      "CURSOR_TRACE_ID": "editor-trace"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "CRUSH"
+  },
+  {
+    "name": "HERMES_SESSION_ID takes priority over inherited Cursor terminal context",
+    "env": {
+      "HERMES_SESSION_ID": "session-test",
+      "CURSOR_TRACE_ID": "editor-trace"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "HERMES"
+  },
+  {
+    "name": "KILOCODE_FEATURE takes priority over inherited Cursor terminal context",
+    "env": {
+      "KILOCODE_FEATURE": "shell",
+      "CURSOR_TRACE_ID": "editor-trace"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "KILO_CODE"
+  },
+  {
+    "name": "TRAE_AI_SHELL_ID takes priority over inherited Cursor terminal context",
+    "env": {
+      "TRAE_AI_SHELL_ID": "shell-test",
+      "CURSOR_TRACE_ID": "editor-trace"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "TRAE"
+  },
+  {
+    "name": "VTCODE takes priority over inherited Cursor terminal context",
+    "env": {
+      "VTCODE": "1",
+      "CURSOR_TRACE_ID": "editor-trace"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "VTCODE"
+  },
+  {
+    "name": "Zed terminal context yields to Codex",
+    "env": {
+      "ZED_TERM": "1",
+      "CODEX_THREAD_ID": "thread-test"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "CODEX"
+  },
+  {
+    "name": "Zed terminal context yields to Devin",
+    "env": {
+      "ZED_TERM": "1"
+    },
+    "files": ["/opt/.devin"],
+    "expectedIsAgent": true,
+    "expectedAgentKey": "DEVIN",
+    "skipGo": true
+  },
+  {
+    "name": "AI_AGENT takes priority over newly supported contexts",
+    "env": {
+      "AI_AGENT": "custom-priority",
+      "CRUSH": "1",
+      "HERMES_SESSION_ID": "session-test",
+      "HERMES_AGENT": "true",
+      "KILOCODE_FEATURE": "shell",
+      "TRAE_AI_SHELL_ID": "shell-test",
+      "VTCODE": "1",
+      "ZED_TERM": "1",
+      "GOOSE_TERMINAL": "1",
+      "AGENT_CONTEXT_OUT": "/tmp/kiro-context"
+    },
+    "expectedIsAgent": true,
+    "expectedName": "custom-priority"
+  },
+  {
+    "name": "accepts hi through AI_AGENT without a dedicated marker",
+    "env": {
+      "AI_AGENT": "hi"
+    },
+    "expectedIsAgent": true,
+    "expectedName": "hi"
+  },
+  {
+    "name": "accepts sandbase-harness through AI_AGENT without a dedicated marker",
+    "env": {
+      "AI_AGENT": "sandbase-harness"
+    },
+    "expectedIsAgent": true,
+    "expectedName": "sandbase-harness"
+  },
+
+  {
+    "name": "detects WorkBuddy from exact WORKBUDDY_APPLICATION_NAME",
+    "env": {
+      "WORKBUDDY_APPLICATION_NAME": "WorkBuddy"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "WORKBUDDY"
+  },
+  {
+    "name": "WORKBUDDY_APPLICATION_NAME='' alone does not identify WorkBuddy",
+    "env": {
+      "WORKBUDDY_APPLICATION_NAME": ""
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "WORKBUDDY_APPLICATION_NAME='workbuddy' alone does not identify WorkBuddy",
+    "env": {
+      "WORKBUDDY_APPLICATION_NAME": "workbuddy"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "WORKBUDDY_APPLICATION_NAME='OtherProduct' alone does not identify WorkBuddy",
+    "env": {
+      "WORKBUDDY_APPLICATION_NAME": "OtherProduct"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "WorkBuddy WORKBUDDY_APPLICATION_NAME precedes inherited Cursor and Claude markers",
+    "env": {
+      "WORKBUDDY_APPLICATION_NAME": "WorkBuddy",
+      "CURSOR_AGENT": "1",
+      "CURSOR_TRACE_ID": "editor-trace",
+      "CLAUDECODE": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "WORKBUDDY"
+  },
+  {
+    "name": "detects WorkBuddy from exact WORKBUDDY_APP_NAME",
+    "env": {
+      "WORKBUDDY_APP_NAME": "WorkBuddy"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "WORKBUDDY"
+  },
+  {
+    "name": "WORKBUDDY_APP_NAME='' alone does not identify WorkBuddy",
+    "env": {
+      "WORKBUDDY_APP_NAME": ""
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "WORKBUDDY_APP_NAME='workbuddy' alone does not identify WorkBuddy",
+    "env": {
+      "WORKBUDDY_APP_NAME": "workbuddy"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "WORKBUDDY_APP_NAME='OtherProduct' alone does not identify WorkBuddy",
+    "env": {
+      "WORKBUDDY_APP_NAME": "OtherProduct"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "WorkBuddy WORKBUDDY_APP_NAME precedes inherited Cursor and Claude markers",
+    "env": {
+      "WORKBUDDY_APP_NAME": "WorkBuddy",
+      "CURSOR_AGENT": "1",
+      "CURSOR_TRACE_ID": "editor-trace",
+      "CLAUDECODE": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "WORKBUDDY"
+  },
+  {
+    "name": "packaging and config variables alone do not identify WorkBuddy",
+    "env": {
+      "IS_PACKAGED": "true",
+      "CONFIG_DIR": "/tmp/WorkBuddy",
+      "WORKBUDDY_CONFIG_DIR": "/tmp/WorkBuddy"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "detects Grok Bot from exact SAND_AGENT",
+    "env": {
+      "SAND_AGENT": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "GROK_BOT"
+  },
+  {
+    "name": "Grok Bot shared Cursor compatibility markers do not hide its identity",
+    "env": {
+      "SAND_AGENT": "1",
+      "CURSOR_AGENT": "1",
+      "CURSOR_TRACE_ID": "editor-trace"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "GROK_BOT"
+  },
+  {
+    "name": "SAND_AGENT='' alone does not identify Grok Bot",
+    "env": {
+      "SAND_AGENT": ""
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "SAND_AGENT='0' alone does not identify Grok Bot",
+    "env": {
+      "SAND_AGENT": "0"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "SAND_AGENT='true' alone does not identify Grok Bot",
+    "env": {
+      "SAND_AGENT": "true"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "SAND_AGENT='2' alone does not identify Grok Bot",
+    "env": {
+      "SAND_AGENT": "2"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "invalid SAND_AGENT does not turn Cursor CLI into Grok Bot",
+    "env": {
+      "SAND_AGENT": "0",
+      "CURSOR_AGENT": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "CURSOR_CLI"
+  },
+  {
+    "name": "Grok Build terminal marker stays distinct from Grok Bot",
+    "env": {
+      "GROK_AGENT": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "GROK"
+  },
+  {
+    "name": "Grok Build terminal marker precedes Claude compatibility context",
+    "env": {
+      "GROK_AGENT": "1",
+      "CLAUDECODE": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "GROK"
+  },
+  {
+    "name": "GROK_AGENT='' is not a terminal marker",
+    "env": {
+      "GROK_AGENT": ""
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "GROK_AGENT='0' is not a terminal marker",
+    "env": {
+      "GROK_AGENT": "0"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "GROK_AGENT='true' is not a terminal marker",
+    "env": {
+      "GROK_AGENT": "true"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "GROK_AGENT='grok-code-fast-1' is not a terminal marker",
+    "env": {
+      "GROK_AGENT": "grok-code-fast-1"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "Grok Build plugin context stays distinct from Grok Bot",
+    "env": {
+      "GROK_PLUGIN_ROOT": "/tmp/grok-plugin",
+      "SAND_AGENT": "0"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "GROK"
+  },
+  {
+    "name": "detects QwenWork from a non-empty product integration variable",
+    "env": {
+      "QODER_WORK_INTEGRATION_PRODUCT": "qwenworkcn"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "QWENWORK",
+    "expectedName": "qwenwork"
+  },
+  {
+    "name": "missing QODER_WORK_INTEGRATION_PRODUCT does not identify QwenWork",
+    "env": {},
+    "expectedIsAgent": false
+  },
+  {
+    "name": "empty QODER_WORK_INTEGRATION_PRODUCT does not identify QwenWork",
+    "env": {
+      "QODER_WORK_INTEGRATION_PRODUCT": ""
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "whitespace-only QODER_WORK_INTEGRATION_PRODUCT follows non-empty semantics",
+    "env": {
+      "QODER_WORK_INTEGRATION_PRODUCT": " \t "
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "QWENWORK"
+  },
+  {
+    "name": "QODER_WORK_INTEGRATION_PRODUCT='QWENWORKCN' identifies QwenWork",
+    "env": {
+      "QODER_WORK_INTEGRATION_PRODUCT": "QWENWORKCN"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "QWENWORK"
+  },
+  {
+    "name": "QODER_WORK_INTEGRATION_PRODUCT='QwenWorkCN' identifies QwenWork",
+    "env": {
+      "QODER_WORK_INTEGRATION_PRODUCT": "QwenWorkCN"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "QWENWORK"
+  },
+  {
+    "name": "QODER_WORK_INTEGRATION_PRODUCT='qwenwork' identifies QwenWork",
+    "env": {
+      "QODER_WORK_INTEGRATION_PRODUCT": "qwenwork"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "QWENWORK"
+  },
+  {
+    "name": "QODER_WORK_INTEGRATION_PRODUCT='qoderwork' identifies QwenWork",
+    "env": {
+      "QODER_WORK_INTEGRATION_PRODUCT": "qoderwork"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "QWENWORK"
+  },
+  {
+    "name": "QODER_WORK_INTEGRATION_PRODUCT='other-product' identifies QwenWork",
+    "env": {
+      "QODER_WORK_INTEGRATION_PRODUCT": "other-product"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "QWENWORK"
+  },
+  {
+    "name": "QODER_WORK_INTEGRATION_PRODUCT=' qwenworkcn' identifies QwenWork",
+    "env": {
+      "QODER_WORK_INTEGRATION_PRODUCT": " qwenworkcn"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "QWENWORK"
+  },
+  {
+    "name": "QODER_WORK_INTEGRATION_PRODUCT='qwenworkcn ' identifies QwenWork",
+    "env": {
+      "QODER_WORK_INTEGRATION_PRODUCT": "qwenworkcn "
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "QWENWORK"
+  },
+  {
+    "name": "QODER_WORK_INTEGRATION_PRODUCT='qwenworkcn\\n' identifies QwenWork",
+    "env": {
+      "QODER_WORK_INTEGRATION_PRODUCT": "qwenworkcn\n"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "QWENWORK"
+  },
+  {
+    "name": "QODERWORK_SOURCE_CHAT_ID alone does not identify QwenWork",
+    "env": {
+      "QODERWORK_SOURCE_CHAT_ID": "synthetic-chat"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "QODERWORK_IS_CN alone does not identify QwenWork",
+    "env": {
+      "QODERWORK_IS_CN": "true"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "QODER_SITE alone does not identify QwenWork",
+    "env": {
+      "QODER_SITE": "cn"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "QODERWORK_EXECUTION_ENV alone does not identify QwenWork",
+    "env": {
+      "QODERWORK_EXECUTION_ENV": "local"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "QWENWORK_BASE_URL alone does not identify QwenWork",
+    "env": {
+      "QWENWORK_BASE_URL": "https://qwenwork.example.invalid"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "QODERCN_SERVER_ENDPOINT alone does not identify QwenWork",
+    "env": {
+      "QODERCN_SERVER_ENDPOINT": "https://gateway.example.invalid"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "session region site mode and endpoints together do not identify QwenWork",
+    "env": {
+      "QODERWORK_SOURCE_CHAT_ID": "synthetic-chat",
+      "QODERWORK_IS_CN": "true",
+      "QODER_SITE": "cn",
+      "QODERWORK_EXECUTION_ENV": "local",
+      "QWENWORK_BASE_URL": "https://qwenwork.example.invalid",
+      "QODERCN_SERVER_ENDPOINT": "https://gateway.example.invalid"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "QwenWork accepts another non-empty product value with other context",
+    "env": {
+      "QODERWORK_SOURCE_CHAT_ID": "synthetic-chat",
+      "QODERWORK_IS_CN": "true",
+      "QODER_SITE": "cn",
+      "QODERWORK_EXECUTION_ENV": "local",
+      "QWENWORK_BASE_URL": "https://qwenwork.example.invalid",
+      "QODERCN_SERVER_ENDPOINT": "https://gateway.example.invalid",
+      "QODER_WORK_INTEGRATION_PRODUCT": "other-product"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "QWENWORK"
+  },
+  {
+    "name": "other QwenWork context fields do not override an empty product marker",
+    "env": {
+      "QODERWORK_SOURCE_CHAT_ID": "synthetic-chat",
+      "QODERWORK_IS_CN": "true",
+      "QODER_SITE": "cn",
+      "QODERWORK_EXECUTION_ENV": "local",
+      "QWENWORK_BASE_URL": "https://qwenwork.example.invalid",
+      "QODERCN_SERVER_ENDPOINT": "https://gateway.example.invalid",
+      "QODER_WORK_INTEGRATION_PRODUCT": ""
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "a non-empty QwenWork product variable is sufficient with additional context",
+    "env": {
+      "QODERWORK_SOURCE_CHAT_ID": "synthetic-chat",
+      "QODERWORK_IS_CN": "true",
+      "QODER_SITE": "cn",
+      "QODERWORK_EXECUTION_ENV": "local",
+      "QWENWORK_BASE_URL": "https://qwenwork.example.invalid",
+      "QODERCN_SERVER_ENDPOINT": "https://gateway.example.invalid",
+      "QODER_WORK_INTEGRATION_PRODUCT": "qwenworkcn"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "QWENWORK"
+  },
+  {
+    "name": "QwenWork product marker precedes inherited Cursor and Claude context",
+    "env": {
+      "QODER_WORK_INTEGRATION_PRODUCT": "qwenworkcn",
+      "CURSOR_AGENT": "1",
+      "CURSOR_TRACE_ID": "editor-trace",
+      "CLAUDECODE": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "QWENWORK"
+  },
+  {
+    "name": "QwenWork product marker precedes inherited Claude context",
+    "env": {
+      "QODER_WORK_INTEGRATION_PRODUCT": "qwenworkcn",
+      "CLAUDECODE": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "QWENWORK"
+  },
+  {
+    "name": "old chat marker does not override Cursor context",
+    "env": {
+      "QODERWORK_SOURCE_CHAT_ID": "synthetic-chat",
+      "CURSOR_AGENT": "1",
+      "CURSOR_TRACE_ID": "editor-trace"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "CURSOR"
+  },
+  {
+    "name": "old distribution marker does not override Claude context",
+    "env": {
+      "QODERWORK_IS_CN": "true",
+      "CLAUDECODE": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "CLAUDE"
+  },
+  {
+    "name": "AI_AGENT overrides the non-empty QwenWork product variable",
+    "env": {
+      "AI_AGENT": "custom-priority",
+      "QODER_WORK_INTEGRATION_PRODUCT": "qwenworkcn"
+    },
+    "expectedIsAgent": true,
+    "expectedName": "custom-priority"
+  },
+  {
+    "name": "AI_AGENT still overrides local product contexts",
+    "env": {
+      "AI_AGENT": "custom-priority",
+      "WORKBUDDY_APP_NAME": "WorkBuddy",
+      "SAND_AGENT": "1",
+      "QODER_WORK_INTEGRATION_PRODUCT": "qwenworkcn",
+      "GROK_AGENT": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedName": "custom-priority"
+  },
+
+  {
+    "name": "unprefixed application names do not identify WorkBuddy",
+    "env": {
+      "APPLICATION_NAME": "WorkBuddy",
+      "APP_NAME": "WorkBuddy"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "WorkBuddy packaged flag alone does not identify the application",
+    "env": {
+      "WORKBUDDY_IS_PACKAGED": "1"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "WorkBuddy config directory alone does not identify the application",
+    "env": {
+      "WORKBUDDY_CONFIG_DIR": "/tmp/WorkBuddy"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "CodeBuddy config directory alone does not identify WorkBuddy",
+    "env": {
+      "CODEBUDDY_CONFIG_DIR": "/tmp/CodeBuddy"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "detects Cue Linux desktop worker from exact marker",
+    "env": {
+      "MANUS_LONG_DESKTOP_WORKER": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "CUE"
+  },
+  {
+    "name": "MANUS_LONG_DESKTOP_WORKER='' does not identify Cue",
+    "env": {
+      "MANUS_LONG_DESKTOP_WORKER": ""
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "MANUS_LONG_DESKTOP_WORKER='false' does not identify Cue",
+    "env": {
+      "MANUS_LONG_DESKTOP_WORKER": "false"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "MANUS_LONG_DESKTOP_WORKER='0' does not identify Cue",
+    "env": {
+      "MANUS_LONG_DESKTOP_WORKER": "0"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "MANUS_LONG_DESKTOP_WORKER='true' does not identify Cue",
+    "env": {
+      "MANUS_LONG_DESKTOP_WORKER": "true"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "Other MANUS-prefixed path variables alone do not identify Cue",
+    "env": {
+      "MANUS_CONFIG_DIR": "/tmp/synthetic-config",
+      "MANUS_HOME": "/tmp/synthetic-home"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "Cue desktop worker precedes inherited Cursor and Claude context",
+    "env": {
+      "MANUS_LONG_DESKTOP_WORKER": "1",
+      "CURSOR_AGENT": "1",
+      "CURSOR_TRACE_ID": "editor-trace",
+      "CLAUDECODE": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "CUE"
+  },
+  {
+    "name": "AI_AGENT still overrides the Cue desktop worker marker",
+    "env": {
+      "AI_AGENT": "custom-priority",
+      "MANUS_LONG_DESKTOP_WORKER": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedName": "custom-priority"
+  },
+
+  {
+    "name": "Cue desktop worker marker returns cue rather than manus",
+    "env": {
+      "MANUS_LONG_DESKTOP_WORKER": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedName": "cue"
+  },
+  {
+    "name": "detects Muse active-agent context from exact marker",
+    "env": {
+      "JARVIS_IS_ASSIGNED": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "MUSE"
+  },
+  {
+    "name": "detects Muse tool-call context from a synthetic identifier",
+    "env": {
+      "JARVIS_TOOL_CALL_ID": "synthetic-tool-call"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "MUSE"
+  },
+  {
+    "name": "JARVIS_IS_ASSIGNED='' does not identify Muse",
+    "env": {
+      "JARVIS_IS_ASSIGNED": ""
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "JARVIS_IS_ASSIGNED='0' does not identify Muse",
+    "env": {
+      "JARVIS_IS_ASSIGNED": "0"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "JARVIS_IS_ASSIGNED='false' does not identify Muse",
+    "env": {
+      "JARVIS_IS_ASSIGNED": "false"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "JARVIS_IS_ASSIGNED='true' does not identify Muse",
+    "env": {
+      "JARVIS_IS_ASSIGNED": "true"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "JARVIS_IS_ASSIGNED='1 ' does not identify Muse",
+    "env": {
+      "JARVIS_IS_ASSIGNED": "1 "
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "empty Muse tool-call identifier does not identify Muse",
+    "env": {
+      "JARVIS_TOOL_CALL_ID": ""
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "Muse tool-call marker independently identifies its context",
+    "env": {
+      "JARVIS_IS_ASSIGNED": "0",
+      "JARVIS_TOOL_CALL_ID": "synthetic-tool-call"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "MUSE"
+  },
+  {
+    "name": "instance session and location metadata alone does not identify Muse",
+    "env": {
+      "HATCHLING_ID": "synthetic-instance",
+      "SESSION_ID": "synthetic-session",
+      "TIER": "synthetic-tier",
+      "TIMEZONE": "UTC",
+      "REGION": "synthetic-region"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "JARVIS_IS_ASSIGNED precedes inherited Cursor and Claude context",
+    "env": {
+      "JARVIS_IS_ASSIGNED": "1",
+      "CURSOR_AGENT": "1",
+      "CURSOR_TRACE_ID": "editor-trace",
+      "CLAUDECODE": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "MUSE"
+  },
+  {
+    "name": "JARVIS_TOOL_CALL_ID precedes inherited Cursor and Claude context",
+    "env": {
+      "JARVIS_TOOL_CALL_ID": "synthetic-tool-call",
+      "CURSOR_AGENT": "1",
+      "CURSOR_TRACE_ID": "editor-trace",
+      "CLAUDECODE": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "MUSE"
+  },
+  {
+    "name": "AI_AGENT still overrides Muse runtime markers",
+    "env": {
+      "AI_AGENT": "custom-priority",
+      "JARVIS_IS_ASSIGNED": "1",
+      "JARVIS_TOOL_CALL_ID": "synthetic-tool-call"
+    },
+    "expectedIsAgent": true,
+    "expectedName": "custom-priority"
+  },
+
+  {
+    "name": "Manus context from non-empty MANUS_ADDON_RUNTIME_SPEC_PATH",
+    "env": {
+      "MANUS_ADDON_RUNTIME_SPEC_PATH": "/tmp/synthetic-addon-spec.json"
+    },
+    "expectedIsAgent": true,
+    "expectedName": "manus"
+  },
+  {
+    "name": "empty MANUS_ADDON_RUNTIME_SPEC_PATH does not identify Manus",
+    "env": {
+      "MANUS_ADDON_RUNTIME_SPEC_PATH": ""
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "MANUS_ADDON_RUNTIME_SPEC_PATH precedes inherited Cursor context",
+    "env": {
+      "MANUS_ADDON_RUNTIME_SPEC_PATH": "/tmp/synthetic-addon-spec.json",
+      "CURSOR_AGENT": "1",
+      "CURSOR_TRACE_ID": "editor-trace"
+    },
+    "expectedIsAgent": true,
+    "expectedName": "manus"
+  },
+  {
+    "name": "Manus context from non-empty MANUS_ADDON_RUNTIME_SPECS_REVISION",
+    "env": {
+      "MANUS_ADDON_RUNTIME_SPECS_REVISION": "synthetic-revision"
+    },
+    "expectedIsAgent": true,
+    "expectedName": "manus"
+  },
+  {
+    "name": "empty MANUS_ADDON_RUNTIME_SPECS_REVISION does not identify Manus",
+    "env": {
+      "MANUS_ADDON_RUNTIME_SPECS_REVISION": ""
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "MANUS_ADDON_RUNTIME_SPECS_REVISION precedes inherited Cursor context",
+    "env": {
+      "MANUS_ADDON_RUNTIME_SPECS_REVISION": "synthetic-revision",
+      "CURSOR_AGENT": "1",
+      "CURSOR_TRACE_ID": "editor-trace"
+    },
+    "expectedIsAgent": true,
+    "expectedName": "manus"
+  },
+  {
+    "name": "MANUS_ADDON_PREVIEW_PUBLIC_ORIGIN alone does not identify Manus",
+    "env": {
+      "MANUS_ADDON_PREVIEW_PUBLIC_ORIGIN": "https://preview.example.invalid"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "MANUS_ADDON_REGISTRY_ENABLED alone does not identify Manus",
+    "env": {
+      "MANUS_ADDON_REGISTRY_ENABLED": "1"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "MANUS_ADDON_RUNTIME_PUBLIC_ORIGIN alone does not identify Manus",
+    "env": {
+      "MANUS_ADDON_RUNTIME_PUBLIC_ORIGIN": "https://runtime.example.invalid"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "MANUS_ADDON_SERVER_BRANCH alone does not identify Manus",
+    "env": {
+      "MANUS_ADDON_SERVER_BRANCH": "synthetic-branch"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "MANUS_GROUP_ENABLED alone does not identify Manus",
+    "env": {
+      "MANUS_GROUP_ENABLED": "1"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "other Manus addon and group fields together do not identify Manus",
+    "env": {
+      "MANUS_ADDON_PREVIEW_PUBLIC_ORIGIN": "https://preview.example.invalid",
+      "MANUS_ADDON_REGISTRY_ENABLED": "1",
+      "MANUS_ADDON_RUNTIME_PUBLIC_ORIGIN": "https://runtime.example.invalid",
+      "MANUS_ADDON_SERVER_BRANCH": "synthetic-branch",
+      "MANUS_GROUP_ENABLED": "1"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "AI_AGENT overrides Manus descriptor context",
+    "env": {
+      "AI_AGENT": "custom-priority",
+      "MANUS_ADDON_RUNTIME_SPECS_REVISION": "synthetic-revision"
+    },
+    "expectedIsAgent": true,
+    "expectedName": "custom-priority"
+  },
+
+  {
+    "name": "detects reported Grok Bot cloud shell without SAND_AGENT",
+    "env": {
+      "CURSOR_AGENT": "1",
+      "SAND_MANIFEST_V2": "1",
+      "SAND_SUPERVISOR_ENABLED": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "GROK_BOT"
+  },
+  {
+    "name": "Grok Bot local and cloud markers can coexist",
+    "env": {
+      "CURSOR_AGENT": "1",
+      "SAND_MANIFEST_V2": "1",
+      "SAND_SUPERVISOR_ENABLED": "1",
+      "SAND_AGENT": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "GROK_BOT"
+  },
+  {
+    "name": "Grok Bot local marker does not require valid cloud flags",
+    "env": {
+      "SAND_AGENT": "1",
+      "SAND_MANIFEST_V2": "0",
+      "SAND_SUPERVISOR_ENABLED": "0"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "GROK_BOT"
+  },
+  {
+    "name": "Grok Bot cloud combination does not require the local marker value",
+    "env": {
+      "CURSOR_AGENT": "1",
+      "SAND_MANIFEST_V2": "1",
+      "SAND_SUPERVISOR_ENABLED": "1",
+      "SAND_AGENT": "0"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "GROK_BOT"
+  },
+  {
+    "name": "Grok Bot cloud branch requires CURSOR_AGENT",
+    "env": {
+      "SAND_MANIFEST_V2": "1",
+      "SAND_SUPERVISOR_ENABLED": "1"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "empty CURSOR_AGENT does not satisfy the Grok Bot cloud branch",
+    "env": {
+      "CURSOR_AGENT": "",
+      "SAND_MANIFEST_V2": "1",
+      "SAND_SUPERVISOR_ENABLED": "1"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "Grok Bot cloud branch requires SAND_MANIFEST_V2",
+    "env": {
+      "CURSOR_AGENT": "1",
+      "SAND_SUPERVISOR_ENABLED": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "CURSOR_CLI"
+  },
+  {
+    "name": "empty SAND_MANIFEST_V2 does not satisfy the Grok Bot cloud branch",
+    "env": {
+      "CURSOR_AGENT": "1",
+      "SAND_MANIFEST_V2": "",
+      "SAND_SUPERVISOR_ENABLED": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "CURSOR_CLI"
+  },
+  {
+    "name": "Grok Bot cloud branch requires SAND_SUPERVISOR_ENABLED",
+    "env": {
+      "CURSOR_AGENT": "1",
+      "SAND_MANIFEST_V2": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "CURSOR_CLI"
+  },
+  {
+    "name": "empty SAND_SUPERVISOR_ENABLED does not satisfy the Grok Bot cloud branch",
+    "env": {
+      "CURSOR_AGENT": "1",
+      "SAND_MANIFEST_V2": "1",
+      "SAND_SUPERVISOR_ENABLED": ""
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "CURSOR_CLI"
+  },
+  {
+    "name": "SAND_MANIFEST_V2='0' falls back to Cursor CLI instead of Grok Bot",
+    "env": {
+      "CURSOR_AGENT": "1",
+      "SAND_MANIFEST_V2": "0",
+      "SAND_SUPERVISOR_ENABLED": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "CURSOR_CLI"
+  },
+  {
+    "name": "SAND_MANIFEST_V2='true' falls back to Cursor CLI instead of Grok Bot",
+    "env": {
+      "CURSOR_AGENT": "1",
+      "SAND_MANIFEST_V2": "true",
+      "SAND_SUPERVISOR_ENABLED": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "CURSOR_CLI"
+  },
+  {
+    "name": "SAND_MANIFEST_V2='false' falls back to Cursor CLI instead of Grok Bot",
+    "env": {
+      "CURSOR_AGENT": "1",
+      "SAND_MANIFEST_V2": "false",
+      "SAND_SUPERVISOR_ENABLED": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "CURSOR_CLI"
+  },
+  {
+    "name": "SAND_MANIFEST_V2=' 1 ' falls back to Cursor CLI instead of Grok Bot",
+    "env": {
+      "CURSOR_AGENT": "1",
+      "SAND_MANIFEST_V2": " 1 ",
+      "SAND_SUPERVISOR_ENABLED": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "CURSOR_CLI"
+  },
+  {
+    "name": "SAND_MANIFEST_V2 alone does not identify Grok Bot",
+    "env": {
+      "SAND_MANIFEST_V2": "1"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "SAND_SUPERVISOR_ENABLED='0' falls back to Cursor CLI instead of Grok Bot",
+    "env": {
+      "CURSOR_AGENT": "1",
+      "SAND_MANIFEST_V2": "1",
+      "SAND_SUPERVISOR_ENABLED": "0"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "CURSOR_CLI"
+  },
+  {
+    "name": "SAND_SUPERVISOR_ENABLED='true' falls back to Cursor CLI instead of Grok Bot",
+    "env": {
+      "CURSOR_AGENT": "1",
+      "SAND_MANIFEST_V2": "1",
+      "SAND_SUPERVISOR_ENABLED": "true"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "CURSOR_CLI"
+  },
+  {
+    "name": "SAND_SUPERVISOR_ENABLED='false' falls back to Cursor CLI instead of Grok Bot",
+    "env": {
+      "CURSOR_AGENT": "1",
+      "SAND_MANIFEST_V2": "1",
+      "SAND_SUPERVISOR_ENABLED": "false"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "CURSOR_CLI"
+  },
+  {
+    "name": "SAND_SUPERVISOR_ENABLED=' 1 ' falls back to Cursor CLI instead of Grok Bot",
+    "env": {
+      "CURSOR_AGENT": "1",
+      "SAND_MANIFEST_V2": "1",
+      "SAND_SUPERVISOR_ENABLED": " 1 "
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "CURSOR_CLI"
+  },
+  {
+    "name": "SAND_SUPERVISOR_ENABLED alone does not identify Grok Bot",
+    "env": {
+      "SAND_SUPERVISOR_ENABLED": "1"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "Cursor marker alone does not identify the Grok Bot cloud shell",
+    "env": {
+      "CURSOR_AGENT": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "CURSOR_CLI"
+  },
+  {
+    "name": "Grok Bot cloud shell precedes inherited Cursor editor context",
+    "env": {
+      "CURSOR_AGENT": "1",
+      "SAND_MANIFEST_V2": "1",
+      "SAND_SUPERVISOR_ENABLED": "1",
+      "CURSOR_TRACE_ID": "editor-trace"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "GROK_BOT"
+  },
+  {
+    "name": "AI_AGENT overrides Grok Bot cloud shell context",
+    "env": {
+      "CURSOR_AGENT": "1",
+      "SAND_MANIFEST_V2": "1",
+      "SAND_SUPERVISOR_ENABLED": "1",
+      "AI_AGENT": "custom-priority"
+    },
+    "expectedIsAgent": true,
+    "expectedName": "custom-priority"
+  },
+  {
+    "name": "detects Doubao Work from a non-empty agent-name variable",
+    "env": {
+      "DOUBAO_OFFICE_AGENT_NAME": "synthetic-agent"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "DOUBAO_WORK",
+    "expectedName": "doubao-work"
+  },
+  {
+    "name": "missing DOUBAO_OFFICE_AGENT_NAME does not identify Doubao Work",
+    "env": {},
+    "expectedIsAgent": false
+  },
+  {
+    "name": "empty DOUBAO_OFFICE_AGENT_NAME does not identify Doubao Work",
+    "env": {
+      "DOUBAO_OFFICE_AGENT_NAME": ""
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "whitespace-only DOUBAO_OFFICE_AGENT_NAME follows non-empty semantics",
+    "env": {
+      "DOUBAO_OFFICE_AGENT_NAME": " \t "
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "DOUBAO_WORK"
+  },
+  {
+    "name": "DOUBAO_OFFICE_AGENT_NAME='other-agent' identifies Doubao Work",
+    "env": {
+      "DOUBAO_OFFICE_AGENT_NAME": "other-agent"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "DOUBAO_WORK"
+  },
+  {
+    "name": "DOUBAO_OFFICE_AGENT_NAME='doubao-work' identifies Doubao Work",
+    "env": {
+      "DOUBAO_OFFICE_AGENT_NAME": "doubao-work"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "DOUBAO_WORK"
+  },
+  {
+    "name": "DOUBAO_OFFICE_AGENT_NAME='SYNTHETIC_AGENT' identifies Doubao Work",
+    "env": {
+      "DOUBAO_OFFICE_AGENT_NAME": "SYNTHETIC_AGENT"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "DOUBAO_WORK"
+  },
+  {
+    "name": "DOUBAO_OFFICE_AGENT_NAME='Synthetic_Agent' identifies Doubao Work",
+    "env": {
+      "DOUBAO_OFFICE_AGENT_NAME": "Synthetic_Agent"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "DOUBAO_WORK"
+  },
+  {
+    "name": "DOUBAO_OFFICE_AGENT_NAME=' synthetic-agent' identifies Doubao Work",
+    "env": {
+      "DOUBAO_OFFICE_AGENT_NAME": " synthetic-agent"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "DOUBAO_WORK"
+  },
+  {
+    "name": "DOUBAO_OFFICE_AGENT_NAME='synthetic-agent ' identifies Doubao Work",
+    "env": {
+      "DOUBAO_OFFICE_AGENT_NAME": "synthetic-agent "
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "DOUBAO_WORK"
+  },
+  {
+    "name": "DOUBAO_OFFICE_AGENT_NAME='synthetic-agent\\n' identifies Doubao Work",
+    "env": {
+      "DOUBAO_OFFICE_AGENT_NAME": "synthetic-agent\n"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "DOUBAO_WORK"
+  },
+  {
+    "name": "DOUBAO_OFFICE_ANSWER_MESSAGE_ID alone does not identify Doubao Work",
+    "env": {
+      "DOUBAO_OFFICE_ANSWER_MESSAGE_ID": "synthetic-message"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "DOUBAO_OFFICE_APP_ID alone does not identify Doubao Work",
+    "env": {
+      "DOUBAO_OFFICE_APP_ID": "synthetic-app"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "DOUBAO_OFFICE_PLATFORM_APP_ID alone does not identify Doubao Work",
+    "env": {
+      "DOUBAO_OFFICE_PLATFORM_APP_ID": "synthetic-platform-app"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "DOUBAO_OFFICE_CLI_CITATION alone does not identify Doubao Work",
+    "env": {
+      "DOUBAO_OFFICE_CLI_CITATION": "synthetic-citation"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "DOUBAO_OFFICE_CLI_FORWARD_PROXY alone does not identify Doubao Work",
+    "env": {
+      "DOUBAO_OFFICE_CLI_FORWARD_PROXY": "https://cli-proxy.example.invalid"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "DOUBAO_OFFICE_CLI_TOKEN alone does not identify Doubao Work",
+    "env": {
+      "DOUBAO_OFFICE_CLI_TOKEN": "synthetic-test-token"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "DOUBAO_OFFICE_EDITION alone does not identify Doubao Work",
+    "env": {
+      "DOUBAO_OFFICE_EDITION": "synthetic-edition"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "DOUBAO_OFFICE_FORWARD_PROXY alone does not identify Doubao Work",
+    "env": {
+      "DOUBAO_OFFICE_FORWARD_PROXY": "https://proxy.example.invalid"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "DOUBAO_OFFICE_LOG_ID alone does not identify Doubao Work",
+    "env": {
+      "DOUBAO_OFFICE_LOG_ID": "synthetic-log"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "DOUBAO_OFFICE_MARKET alone does not identify Doubao Work",
+    "env": {
+      "DOUBAO_OFFICE_MARKET": "synthetic-market"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "Doubao Work metadata together does not identify the agent",
+    "env": {
+      "DOUBAO_OFFICE_ANSWER_MESSAGE_ID": "synthetic-message",
+      "DOUBAO_OFFICE_APP_ID": "synthetic-app",
+      "DOUBAO_OFFICE_PLATFORM_APP_ID": "synthetic-platform-app",
+      "DOUBAO_OFFICE_CLI_CITATION": "synthetic-citation",
+      "DOUBAO_OFFICE_CLI_FORWARD_PROXY": "https://cli-proxy.example.invalid",
+      "DOUBAO_OFFICE_CLI_TOKEN": "synthetic-test-token",
+      "DOUBAO_OFFICE_EDITION": "synthetic-edition",
+      "DOUBAO_OFFICE_FORWARD_PROXY": "https://proxy.example.invalid",
+      "DOUBAO_OFFICE_LOG_ID": "synthetic-log",
+      "DOUBAO_OFFICE_MARKET": "synthetic-market"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "Doubao Work metadata does not override an empty agent-name marker",
+    "env": {
+      "DOUBAO_OFFICE_ANSWER_MESSAGE_ID": "synthetic-message",
+      "DOUBAO_OFFICE_APP_ID": "synthetic-app",
+      "DOUBAO_OFFICE_PLATFORM_APP_ID": "synthetic-platform-app",
+      "DOUBAO_OFFICE_CLI_CITATION": "synthetic-citation",
+      "DOUBAO_OFFICE_CLI_FORWARD_PROXY": "https://cli-proxy.example.invalid",
+      "DOUBAO_OFFICE_CLI_TOKEN": "synthetic-test-token",
+      "DOUBAO_OFFICE_EDITION": "synthetic-edition",
+      "DOUBAO_OFFICE_FORWARD_PROXY": "https://proxy.example.invalid",
+      "DOUBAO_OFFICE_LOG_ID": "synthetic-log",
+      "DOUBAO_OFFICE_MARKET": "synthetic-market",
+      "DOUBAO_OFFICE_AGENT_NAME": ""
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "Doubao Work accepts another non-empty agent name with metadata",
+    "env": {
+      "DOUBAO_OFFICE_ANSWER_MESSAGE_ID": "synthetic-message",
+      "DOUBAO_OFFICE_APP_ID": "synthetic-app",
+      "DOUBAO_OFFICE_PLATFORM_APP_ID": "synthetic-platform-app",
+      "DOUBAO_OFFICE_CLI_CITATION": "synthetic-citation",
+      "DOUBAO_OFFICE_CLI_FORWARD_PROXY": "https://cli-proxy.example.invalid",
+      "DOUBAO_OFFICE_CLI_TOKEN": "synthetic-test-token",
+      "DOUBAO_OFFICE_EDITION": "synthetic-edition",
+      "DOUBAO_OFFICE_FORWARD_PROXY": "https://proxy.example.invalid",
+      "DOUBAO_OFFICE_LOG_ID": "synthetic-log",
+      "DOUBAO_OFFICE_MARKET": "synthetic-market",
+      "DOUBAO_OFFICE_AGENT_NAME": "other-agent"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "DOUBAO_WORK"
+  },
+  {
+    "name": "a non-empty Doubao Work agent name is sufficient with other metadata",
+    "env": {
+      "DOUBAO_OFFICE_ANSWER_MESSAGE_ID": "synthetic-message",
+      "DOUBAO_OFFICE_APP_ID": "synthetic-app",
+      "DOUBAO_OFFICE_PLATFORM_APP_ID": "synthetic-platform-app",
+      "DOUBAO_OFFICE_CLI_CITATION": "synthetic-citation",
+      "DOUBAO_OFFICE_CLI_FORWARD_PROXY": "https://cli-proxy.example.invalid",
+      "DOUBAO_OFFICE_CLI_TOKEN": "synthetic-test-token",
+      "DOUBAO_OFFICE_EDITION": "synthetic-edition",
+      "DOUBAO_OFFICE_FORWARD_PROXY": "https://proxy.example.invalid",
+      "DOUBAO_OFFICE_LOG_ID": "synthetic-log",
+      "DOUBAO_OFFICE_MARKET": "synthetic-market",
+      "DOUBAO_OFFICE_AGENT_NAME": "synthetic-agent"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "DOUBAO_WORK"
+  },
+  {
+    "name": "Doubao Work precedes inherited Cursor and Claude context",
+    "env": {
+      "DOUBAO_OFFICE_AGENT_NAME": "synthetic-agent",
+      "CURSOR_AGENT": "1",
+      "CURSOR_TRACE_ID": "synthetic-trace",
+      "CLAUDECODE": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "DOUBAO_WORK"
+  },
+  {
+    "name": "another non-empty Doubao Work name precedes Cursor context",
+    "env": {
+      "DOUBAO_OFFICE_AGENT_NAME": "other-agent",
+      "CURSOR_AGENT": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "DOUBAO_WORK"
+  },
+  {
+    "name": "AI_AGENT overrides the non-empty Doubao Work agent-name variable",
+    "env": {
+      "DOUBAO_OFFICE_AGENT_NAME": "synthetic-agent",
+      "AI_AGENT": "custom-priority"
+    },
+    "expectedIsAgent": true,
+    "expectedName": "custom-priority"
   }
 ]

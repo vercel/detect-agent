@@ -5,6 +5,158 @@
   "aiAgentVar": "AI_AGENT",
   "agents": [
     {
+      "key": "CRUSH",
+      "name": "crush",
+      "description": "A terminal coding agent from Charm.",
+      "match": {
+        "type": "anyOf",
+        "conditions": [{ "type": "env_set", "name": "CRUSH" }]
+      }
+    },
+    {
+      "key": "HERMES",
+      "name": "hermes-agent",
+      "description": "An AI agent from Nous Research with persistent memory and reusable skills.",
+      "match": {
+        "type": "anyOf",
+        "conditions": [
+          { "type": "env_set", "name": "HERMES_SESSION_ID" },
+          { "type": "env_set", "name": "HERMES_AGENT" }
+        ]
+      }
+    },
+    {
+      "key": "KILO_CODE",
+      "name": "kilo-code",
+      "description": "An open-source coding agent available in editors and the terminal.",
+      "match": {
+        "type": "anyOf",
+        "conditions": [{ "type": "env_set", "name": "KILOCODE_FEATURE" }]
+      }
+    },
+    {
+      "key": "TRAE",
+      "name": "trae",
+      "description": "An AI coding environment with IDE and SOLO modes.",
+      "match": {
+        "type": "anyOf",
+        "conditions": [{ "type": "env_set", "name": "TRAE_AI_SHELL_ID" }]
+      }
+    },
+    {
+      "key": "VTCODE",
+      "name": "vtcode",
+      "description": "A terminal coding agent for planning, implementing and reviewing code.",
+      "match": {
+        "type": "anyOf",
+        "conditions": [{ "type": "env_value", "name": "VTCODE", "value": "1" }]
+      }
+    },
+    {
+      "key": "WORKBUDDY",
+      "name": "workbuddy",
+      "description": "Tencent's desktop AI workspace for completing office tasks.",
+      "match": {
+        "type": "anyOf",
+        "conditions": [
+          {
+            "type": "env_value",
+            "name": "WORKBUDDY_APPLICATION_NAME",
+            "value": "WorkBuddy"
+          },
+          {
+            "type": "env_value",
+            "name": "WORKBUDDY_APP_NAME",
+            "value": "WorkBuddy"
+          }
+        ]
+      }
+    },
+    {
+      "key": "GROK_BOT",
+      "name": "grok-bot",
+      "description": "AI teammates from Cursor that carry out tasks across apps and websites on a persistent cloud computer.",
+      "match": {
+        "type": "anyOf",
+        "conditions": [
+          { "type": "env_value", "name": "SAND_AGENT", "value": "1" },
+          {
+            "type": "allOf",
+            "conditions": [
+              { "type": "env_set", "name": "CURSOR_AGENT" },
+              { "type": "env_value", "name": "SAND_MANIFEST_V2", "value": "1" },
+              {
+                "type": "env_value",
+                "name": "SAND_SUPERVISOR_ENABLED",
+                "value": "1"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "key": "QWENWORK",
+      "name": "qwenwork",
+      "description": "Alibaba's AI office platform for completing tasks across desktop and web.",
+      "match": {
+        "type": "anyOf",
+        "conditions": [
+          { "type": "env_set", "name": "QODER_WORK_INTEGRATION_PRODUCT" }
+        ]
+      }
+    },
+    {
+      "key": "CUE",
+      "name": "cue",
+      "description": "Personal AI agents from Manus AI with their own computer, email, phone, and wallet.",
+      "match": {
+        "type": "anyOf",
+        "conditions": [
+          {
+            "type": "env_value",
+            "name": "MANUS_LONG_DESKTOP_WORKER",
+            "value": "1"
+          }
+        ]
+      }
+    },
+    {
+      "key": "MUSE",
+      "name": "muse",
+      "description": "Meta's personal AI agent that works across connected services on a dedicated cloud computer.",
+      "match": {
+        "type": "anyOf",
+        "conditions": [
+          { "type": "env_value", "name": "JARVIS_IS_ASSIGNED", "value": "1" },
+          { "type": "env_set", "name": "JARVIS_TOOL_CALL_ID" }
+        ]
+      }
+    },
+    {
+      "key": "MANUS",
+      "name": "manus",
+      "description": "General-purpose AI agent for research, content creation, and workflow automation.",
+      "match": {
+        "type": "anyOf",
+        "conditions": [
+          { "type": "env_set", "name": "MANUS_ADDON_RUNTIME_SPEC_PATH" },
+          { "type": "env_set", "name": "MANUS_ADDON_RUNTIME_SPECS_REVISION" }
+        ]
+      }
+    },
+    {
+      "key": "DOUBAO_WORK",
+      "name": "doubao-work",
+      "description": "An AI work platform for individuals, teams, and enterprises.",
+      "match": {
+        "type": "anyOf",
+        "conditions": [
+          { "type": "env_set", "name": "DOUBAO_OFFICE_AGENT_NAME" }
+        ]
+      }
+    },
+    {
       "key": "CURSOR",
       "name": "cursor",
       "match": {
@@ -39,10 +191,11 @@
     {
       "key": "GROK",
       "name": "grok",
-      "description": "Grok Build plugin hooks. Evaluated before Claude Code because Grok supports Claude Code plugins and may expose compatibility markers.",
+      "description": "Grok Build terminal or plugin context. GROK_AGENT must equal 1 because the same variable also has selector uses. Evaluated before Claude Code compatibility markers.",
       "match": {
         "type": "anyOf",
         "conditions": [
+          { "type": "env_value", "name": "GROK_AGENT", "value": "1" },
           { "type": "env_set", "name": "GROK_PLUGIN_ROOT" },
           { "type": "env_set", "name": "GROK_PLUGIN_DATA" }
         ]
@@ -112,18 +265,18 @@
       "name": "goose",
       "match": {
         "type": "anyOf",
-        "conditions": [{ "type": "env_set", "name": "GOOSE_PROVIDER" }]
+        "conditions": [
+          { "type": "env_set", "name": "GOOSE_PROVIDER" },
+          { "type": "env_set", "name": "GOOSE_TERMINAL" }
+        ]
       }
     },
     {
       "key": "JUNIE",
       "name": "junie",
       "match": {
-        "type": "anyOf",
-        "conditions": [
-          { "type": "env_set", "name": "JUNIE_DATA" },
-          { "type": "env_set", "name": "JUNIE_SHIM_PATH" }
-        ]
+        "type": "env_set",
+        "name": "JUNIE_SHIM_PATH"
       }
     },
     {
@@ -193,12 +346,22 @@
     {
       "key": "KIRO",
       "name": "kiro",
-      "description": "AWS Kiro. TERM_PROGRAM=kiro is set by both the IDE terminal and the CLI agent, so gate on no_tty to avoid misdetecting a human at the integrated terminal.",
+      "description": "AWS Kiro context from AGENT_CONTEXT_OUT, or the existing TERM_PROGRAM and no_tty heuristic. TERM_PROGRAM alone also occurs in human-operated IDE terminals.",
       "match": {
-        "type": "allOf",
+        "type": "anyOf",
         "conditions": [
-          { "type": "env_matches", "name": "TERM_PROGRAM", "pattern": "kiro" },
-          { "type": "no_tty" }
+          { "type": "env_set", "name": "AGENT_CONTEXT_OUT" },
+          {
+            "type": "allOf",
+            "conditions": [
+              {
+                "type": "env_matches",
+                "name": "TERM_PROGRAM",
+                "pattern": "kiro"
+              },
+              { "type": "no_tty" }
+            ]
+          }
         ]
       }
     },
@@ -216,6 +379,15 @@
       "match": {
         "type": "anyOf",
         "conditions": [{ "type": "file_exists", "path": "/opt/.devin" }]
+      }
+    },
+    {
+      "key": "ZED",
+      "name": "zed",
+      "description": "A code editor designed for fast, collaborative development.",
+      "match": {
+        "type": "anyOf",
+        "conditions": [{ "type": "env_set", "name": "ZED_TERM" }]
       }
     }
   ]

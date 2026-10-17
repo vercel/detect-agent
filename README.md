@@ -83,9 +83,38 @@ This package can detect the following AI agents and development environments:
 - **Pi**
 - **GitHub Copilot**
 - **Replit**
+- **Crush** (Charm)
+- **Hermes Agent** (Nous Research)
+- **Kilo Code**
+- **Trae**
+- **VTCode**
+- **Zed terminal environment**
+- **WorkBuddy** (Tencent)
+- **Grok Bot** (Cursor; local and sandbox contexts)
+- **QwenWork**
+- **Cue desktop-worker runtime**
+- **Manus**
+- **Muse** (active assignment or tool-call context)
+- **Doubao Work**
 - **Custom agents** (via the `AI_AGENT` environment variable)
 
 See [`agents.json`](https://raw.githubusercontent.com/vercel/detect-agent/main/agents.json) for the exact environment variables and conditions used to detect each one.
+
+### Environment context and sources
+
+Detection identifies inherited environment contexts; a match does not authenticate
+which process started a command. `ZED_TERM` identifies a Zed terminal, including a
+human-operated terminal, and is therefore a fallback after other supported contexts.
+
+The added Crush, Hermes, Kilo Code, Trae, VTCode, and Zed markers, plus
+`GOOSE_TERMINAL` and `AGENT_CONTEXT_OUT` aliases, are also listed in the
+[Hugging Face registry](https://github.com/huggingface/huggingface.js/blob/e08240742cd64d8f908b22e52358b84c812e882c/packages/tasks/src/agent-harnesses.ts).
+Hermes additionally [exports `HERMES_AGENT`](https://github.com/NousResearch/hermes-agent/blob/e5eb6b36fe78eb012cefd1f5f436cd458411b8b3/hermes_cli/main.py#L3268).
+VTCode requires exactly `VTCODE=1`; the other added markers require non-empty values.
+New agent-specific markers precede inherited Cursor terminal context. Existing
+agent identifiers and their relative priority remain unchanged.
+
+Desktop-distribution inspection and user-reported shell observations are documented in [the marker evidence notes](docs/environment-marker-evidence.md). Only synthetic data is used in tests. The Grok Bot sandbox branch requires the Cursor marker and both runtime flags together; the flags do not independently identify a product.
 
 ## The AI_AGENT Standard
 

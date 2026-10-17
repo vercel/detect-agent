@@ -1,16 +1,30 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
-import mockFs from 'mock-fs';
+import { access } from 'node:fs/promises';
+import { constants } from 'node:fs';
 import { evaluateCondition } from './evaluate-condition';
 import type { Condition } from './types';
 
+vi.mock('node:fs/promises', () => ({ access: vi.fn() }));
+
 describe('evaluateCondition', () => {
+  const files = new Map<string, 'present' | 'EACCES'>();
+
   beforeEach(() => {
+    files.clear();
+    vi.mocked(access).mockReset();
+    vi.mocked(access).mockImplementation(async path => {
+      const state = files.get(String(path));
+      if (state !== 'present') {
+        const code = state ?? 'ENOENT';
+        throw Object.assign(new Error(code), { code });
+      }
+    });
     vi.unstubAllEnvs();
   });
 
   afterEach(() => {
     vi.unstubAllEnvs();
-    mockFs.restore();
+    vi.mocked(access).mockReset();
   });
 
   describe('env_set', () => {
@@ -81,21 +95,21 @@ describe('evaluateCondition', () => {
 
   describe('file_exists', () => {
     it('is true when the path exists', async () => {
-      mockFs({ '/opt/.devin': mockFs.directory({ mode: 0o755 }) });
+      files.set('/opt/.devin', 'present');
       expect(
         await evaluateCondition({ type: 'file_exists', path: '/opt/.devin' })
       ).toBe(true);
+      expect(access).toHaveBeenCalledWith('/opt/.devin', constants.F_OK);
     });
 
     it('is false when the path does not exist', async () => {
-      mockFs({});
       expect(
         await evaluateCondition({ type: 'file_exists', path: '/opt/.devin' })
       ).toBe(false);
     });
 
     it('is false when access throws (e.g. unreadable parent)', async () => {
-      mockFs({ '/opt': mockFs.directory({ mode: 0o000 }) });
+      files.set('/opt/.devin', 'EACCES');
       expect(
         await evaluateCondition({ type: 'file_exists', path: '/opt/.devin' })
       ).toBe(false);
