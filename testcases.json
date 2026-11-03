@@ -297,5 +297,107 @@
     "env": { "AI_AGENT": "  custom-agent  " },
     "expectedIsAgent": true,
     "expectedName": "custom-agent"
+  },
+  {
+    "name": "Devin execution marker 0",
+    "env": {
+      "DEVIN_DIR": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "DEVIN"
+  },
+  {
+    "name": "Devin execution marker 1",
+    "env": {
+      "DEVIN_DIR": "0"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "DEVIN"
+  },
+  {
+    "name": "Devin execution marker 2",
+    "env": {
+      "DEVIN_DIR": "false"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "DEVIN"
+  },
+  {
+    "name": "Devin execution marker 3",
+    "env": {
+      "DEVIN_DIR": " "
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "DEVIN"
+  },
+  {
+    "name": "Devin execution marker 4",
+    "env": {
+      "DEVIN_DISABLE_HISTEXPAND": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "DEVIN"
+  },
+  {
+    "name": "Devin execution marker 5",
+    "env": {
+      "DEVIN_DISABLE_HISTEXPAND": "0"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "DEVIN"
+  },
+  {
+    "name": "Devin execution marker 6",
+    "env": {
+      "DEVIN_DISABLE_HISTEXPAND": "false"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "DEVIN"
+  },
+  {
+    "name": "Devin execution marker 7",
+    "env": {
+      "DEVIN_DISABLE_HISTEXPAND": " "
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "DEVIN"
+  },
+  {
+    "name": "Devin absent/empty/configuration 0",
+    "env": {},
+    "expectedIsAgent": false
+  },
+  {
+    "name": "Devin absent/empty/configuration 1",
+    "env": {},
+    "expectedIsAgent": false
+  },
+  {
+    "name": "Devin absent/empty/configuration 2",
+    "env": {
+      "DEVIN_DIR": ""
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "Devin absent/empty/configuration 3",
+    "env": {},
+    "expectedIsAgent": false
+  },
+  {
+    "name": "Devin absent/empty/configuration 4",
+    "env": {
+      "DEVIN_DISABLE_HISTEXPAND": ""
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "Devin inherited host with inner Claude",
+    "env": {
+      "DEVIN_DIR": "1",
+      "CLAUDECODE": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "CLAUDE"
   }
 ]

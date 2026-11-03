@@ -215,7 +215,25 @@
       "name": "devin",
       "match": {
         "type": "anyOf",
-        "conditions": [{ "type": "file_exists", "path": "/opt/.devin" }]
+        "conditions": [
+          {
+            "type": "env_set",
+            "name": "DEVIN_DIR"
+          },
+          {
+            "type": "env_set",
+            "name": "DEVIN_DISABLE_HISTEXPAND"
+          },
+          {
+            "type": "anyOf",
+            "conditions": [
+              {
+                "type": "file_exists",
+                "path": "/opt/.devin"
+              }
+            ]
+          }
+        ]
       }
     }
   ]
