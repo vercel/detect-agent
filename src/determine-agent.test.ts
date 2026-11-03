@@ -9,6 +9,8 @@ type TestCase = (typeof testCases)[number];
 
 const ALL_AGENT_ENVS = [
   'AI_AGENT',
+  'DEVIN_DIR',
+  'DEVIN_DISABLE_HISTEXPAND',
   'CURSOR_TRACE_ID',
   'CURSOR_AGENT',
   'CURSOR_EXTENSION_HOST_ROLE',
