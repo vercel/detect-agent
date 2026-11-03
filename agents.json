@@ -57,6 +57,24 @@
       }
     },
     {
+      "key": "ROO_CODE",
+      "name": "roo-code",
+      "description": "Roo Code terminal and headless CLI execution markers.",
+      "match": {
+        "type": "anyOf",
+        "conditions": [
+          {
+            "type": "env_set",
+            "name": "ROO_ACTIVE"
+          },
+          {
+            "type": "env_set",
+            "name": "ROO_CLI_RUNTIME"
+          }
+        ]
+      }
+    },
+    {
       "key": "CLINE",
       "name": "cline",
       "match": {
