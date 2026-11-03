@@ -221,7 +221,7 @@
     {
       "key": "INSTINCT",
       "name": "instinct",
-      "description": "Instinct execution marker; see docs/agent-signals/instinct.md",
+      "description": "Instinct command execution markers observed in Linux cloud sandboxes.",
       "match": {
         "type": "anyOf",
         "conditions": [
