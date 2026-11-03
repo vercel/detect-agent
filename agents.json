@@ -59,7 +59,7 @@
     {
       "key": "ROO_CODE",
       "name": "roo-code",
-      "description": "Roo Code execution marker; see docs/agent-signals/roo-code.md",
+      "description": "Roo Code terminal and headless CLI execution markers.",
       "match": {
         "type": "anyOf",
         "conditions": [
