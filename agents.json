@@ -217,6 +217,20 @@
         "type": "anyOf",
         "conditions": [{ "type": "file_exists", "path": "/opt/.devin" }]
       }
+    },
+    {
+      "key": "LINGGUANG",
+      "name": "lingguang",
+      "description": "Lingguang command execution marker observed in Linux cloud sandboxes.",
+      "match": {
+        "type": "anyOf",
+        "conditions": [
+          {
+            "type": "env_set",
+            "name": "EXEC_FROM"
+          }
+        ]
+      }
     }
   ]
 }
