@@ -51,7 +51,7 @@
     {
       "key": "QWEN_CODE",
       "name": "qwen-code",
-      "description": "Qwen Code execution marker; see docs/agent-signals/qwen-code.md",
+      "description": "Qwen Code shell execution marker.",
       "match": {
         "type": "anyOf",
         "conditions": [
