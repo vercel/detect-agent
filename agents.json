@@ -217,6 +217,28 @@
         "type": "anyOf",
         "conditions": [{ "type": "file_exists", "path": "/opt/.devin" }]
       }
+    },
+    {
+      "key": "INSTINCT",
+      "name": "instinct",
+      "description": "Instinct command execution markers observed in Linux cloud sandboxes.",
+      "match": {
+        "type": "anyOf",
+        "conditions": [
+          {
+            "type": "env_set",
+            "name": "INSTINCT_OUTER_TOOL_USE_ID"
+          },
+          {
+            "type": "env_set",
+            "name": "INSTINCT_OUTER_TOOL_USE_STARTED_AT"
+          },
+          {
+            "type": "env_set",
+            "name": "INSTINCT_OUTER_TOOL_USE_TIMEOUT_SECONDS"
+          }
+        ]
+      }
     }
   ]
 }

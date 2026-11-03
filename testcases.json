@@ -297,5 +297,151 @@
     "env": { "AI_AGENT": "  custom-agent  " },
     "expectedIsAgent": true,
     "expectedName": "custom-agent"
+  },
+  {
+    "name": "Instinct execution marker 0",
+    "env": {
+      "INSTINCT_OUTER_TOOL_USE_ID": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "INSTINCT"
+  },
+  {
+    "name": "Instinct execution marker 1",
+    "env": {
+      "INSTINCT_OUTER_TOOL_USE_ID": "0"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "INSTINCT"
+  },
+  {
+    "name": "Instinct execution marker 2",
+    "env": {
+      "INSTINCT_OUTER_TOOL_USE_ID": "false"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "INSTINCT"
+  },
+  {
+    "name": "Instinct execution marker 3",
+    "env": {
+      "INSTINCT_OUTER_TOOL_USE_ID": " "
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "INSTINCT"
+  },
+  {
+    "name": "Instinct execution marker 4",
+    "env": {
+      "INSTINCT_OUTER_TOOL_USE_STARTED_AT": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "INSTINCT"
+  },
+  {
+    "name": "Instinct execution marker 5",
+    "env": {
+      "INSTINCT_OUTER_TOOL_USE_STARTED_AT": "0"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "INSTINCT"
+  },
+  {
+    "name": "Instinct execution marker 6",
+    "env": {
+      "INSTINCT_OUTER_TOOL_USE_STARTED_AT": "false"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "INSTINCT"
+  },
+  {
+    "name": "Instinct execution marker 7",
+    "env": {
+      "INSTINCT_OUTER_TOOL_USE_STARTED_AT": " "
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "INSTINCT"
+  },
+  {
+    "name": "Instinct execution marker 8",
+    "env": {
+      "INSTINCT_OUTER_TOOL_USE_TIMEOUT_SECONDS": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "INSTINCT"
+  },
+  {
+    "name": "Instinct execution marker 9",
+    "env": {
+      "INSTINCT_OUTER_TOOL_USE_TIMEOUT_SECONDS": "0"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "INSTINCT"
+  },
+  {
+    "name": "Instinct execution marker 10",
+    "env": {
+      "INSTINCT_OUTER_TOOL_USE_TIMEOUT_SECONDS": "false"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "INSTINCT"
+  },
+  {
+    "name": "Instinct execution marker 11",
+    "env": {
+      "INSTINCT_OUTER_TOOL_USE_TIMEOUT_SECONDS": " "
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "INSTINCT"
+  },
+  {
+    "name": "Instinct absent/empty/configuration 0",
+    "env": {},
+    "expectedIsAgent": false
+  },
+  {
+    "name": "Instinct absent/empty/configuration 1",
+    "env": {},
+    "expectedIsAgent": false
+  },
+  {
+    "name": "Instinct absent/empty/configuration 2",
+    "env": {
+      "INSTINCT_OUTER_TOOL_USE_ID": ""
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "Instinct absent/empty/configuration 3",
+    "env": {},
+    "expectedIsAgent": false
+  },
+  {
+    "name": "Instinct absent/empty/configuration 4",
+    "env": {
+      "INSTINCT_OUTER_TOOL_USE_STARTED_AT": ""
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "Instinct absent/empty/configuration 5",
+    "env": {},
+    "expectedIsAgent": false
+  },
+  {
+    "name": "Instinct absent/empty/configuration 6",
+    "env": {
+      "INSTINCT_OUTER_TOOL_USE_TIMEOUT_SECONDS": ""
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "Instinct inherited host with inner Claude",
+    "env": {
+      "INSTINCT_OUTER_TOOL_USE_ID": "1",
+      "CLAUDECODE": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "CLAUDE"
   }
 ]
