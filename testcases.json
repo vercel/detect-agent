@@ -297,5 +297,98 @@
     "env": { "AI_AGENT": "  custom-agent  " },
     "expectedIsAgent": true,
     "expectedName": "custom-agent"
+  },
+  {
+    "name": "Roo Code execution marker 0",
+    "env": {
+      "ROO_ACTIVE": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "ROO_CODE"
+  },
+  {
+    "name": "Roo Code execution marker 1",
+    "env": {
+      "ROO_ACTIVE": "0"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "ROO_CODE"
+  },
+  {
+    "name": "Roo Code execution marker 2",
+    "env": {
+      "ROO_ACTIVE": "false"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "ROO_CODE"
+  },
+  {
+    "name": "Roo Code execution marker 3",
+    "env": {
+      "ROO_ACTIVE": " "
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "ROO_CODE"
+  },
+  {
+    "name": "Roo Code execution marker 4",
+    "env": {
+      "ROO_CLI_RUNTIME": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "ROO_CODE"
+  },
+  {
+    "name": "Roo Code execution marker 5",
+    "env": {
+      "ROO_CLI_RUNTIME": "0"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "ROO_CODE"
+  },
+  {
+    "name": "Roo Code execution marker 6",
+    "env": {
+      "ROO_CLI_RUNTIME": "false"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "ROO_CODE"
+  },
+  {
+    "name": "Roo Code execution marker 7",
+    "env": {
+      "ROO_CLI_RUNTIME": " "
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "ROO_CODE"
+  },
+  {
+    "name": "Roo Code absent/empty/configuration 0",
+    "env": {},
+    "expectedIsAgent": false
+  },
+  {
+    "name": "Roo Code absent/empty/configuration 1",
+    "env": {},
+    "expectedIsAgent": false
+  },
+  {
+    "name": "Roo Code absent/empty/configuration 2",
+    "env": {
+      "ROO_ACTIVE": ""
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "Roo Code absent/empty/configuration 3",
+    "env": {},
+    "expectedIsAgent": false
+  },
+  {
+    "name": "Roo Code absent/empty/configuration 4",
+    "env": {
+      "ROO_CLI_RUNTIME": ""
+    },
+    "expectedIsAgent": false
   }
 ]
