@@ -297,5 +297,63 @@
     "env": { "AI_AGENT": "  custom-agent  " },
     "expectedIsAgent": true,
     "expectedName": "custom-agent"
+  },
+  {
+    "name": "Lingguang execution marker 0",
+    "env": {
+      "EXEC_FROM": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "LINGGUANG"
+  },
+  {
+    "name": "Lingguang execution marker 1",
+    "env": {
+      "EXEC_FROM": "0"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "LINGGUANG"
+  },
+  {
+    "name": "Lingguang execution marker 2",
+    "env": {
+      "EXEC_FROM": "false"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "LINGGUANG"
+  },
+  {
+    "name": "Lingguang execution marker 3",
+    "env": {
+      "EXEC_FROM": " "
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "LINGGUANG"
+  },
+  {
+    "name": "Lingguang absent/empty/configuration 0",
+    "env": {},
+    "expectedIsAgent": false
+  },
+  {
+    "name": "Lingguang absent/empty/configuration 1",
+    "env": {},
+    "expectedIsAgent": false
+  },
+  {
+    "name": "Lingguang absent/empty/configuration 2",
+    "env": {
+      "EXEC_FROM": ""
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "Lingguang inherited host with inner Claude",
+    "env": {
+      "EXEC_FROM": "1",
+      "CLAUDECODE": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "CLAUDE"
   }
 ]
