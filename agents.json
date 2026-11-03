@@ -221,7 +221,7 @@
     {
       "key": "LINGGUANG",
       "name": "lingguang",
-      "description": "Lingguang execution marker; see docs/agent-signals/lingguang.md",
+      "description": "Lingguang command execution marker observed in Linux cloud sandboxes.",
       "match": {
         "type": "anyOf",
         "conditions": [
