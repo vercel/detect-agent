@@ -297,5 +297,54 @@
     "env": { "AI_AGENT": "  custom-agent  " },
     "expectedIsAgent": true,
     "expectedName": "custom-agent"
+  },
+  {
+    "name": "Qwen Code execution marker 0",
+    "env": {
+      "QWEN_CODE": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "QWEN_CODE"
+  },
+  {
+    "name": "Qwen Code execution marker 1",
+    "env": {
+      "QWEN_CODE": "0"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "QWEN_CODE"
+  },
+  {
+    "name": "Qwen Code execution marker 2",
+    "env": {
+      "QWEN_CODE": "false"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "QWEN_CODE"
+  },
+  {
+    "name": "Qwen Code execution marker 3",
+    "env": {
+      "QWEN_CODE": " "
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "QWEN_CODE"
+  },
+  {
+    "name": "Qwen Code absent/empty/configuration 0",
+    "env": {},
+    "expectedIsAgent": false
+  },
+  {
+    "name": "Qwen Code absent/empty/configuration 1",
+    "env": {},
+    "expectedIsAgent": false
+  },
+  {
+    "name": "Qwen Code absent/empty/configuration 2",
+    "env": {
+      "QWEN_CODE": ""
+    },
+    "expectedIsAgent": false
   }
 ]

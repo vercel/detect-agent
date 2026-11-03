@@ -49,6 +49,20 @@
       }
     },
     {
+      "key": "QWEN_CODE",
+      "name": "qwen-code",
+      "description": "Qwen Code shell execution marker.",
+      "match": {
+        "type": "anyOf",
+        "conditions": [
+          {
+            "type": "env_set",
+            "name": "QWEN_CODE"
+          }
+        ]
+      }
+    },
+    {
       "key": "GEMINI",
       "name": "gemini_cli",
       "match": {
