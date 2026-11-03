@@ -217,6 +217,20 @@
         "type": "anyOf",
         "conditions": [{ "type": "file_exists", "path": "/opt/.devin" }]
       }
+    },
+    {
+      "key": "DEEPSEEK_HARNESS",
+      "name": "deepseek-harness",
+      "description": "DeepSeek Harness shell execution context. Kept last so a nested agent marker takes precedence.",
+      "match": {
+        "type": "anyOf",
+        "conditions": [
+          {
+            "type": "env_set",
+            "name": "DSH_SHELL"
+          }
+        ]
+      }
     }
   ]
 }

@@ -14,6 +14,7 @@ func clearAgentEnvs(t *testing.T) {
 	t.Helper()
 	for _, v := range []string{
 		"AI_AGENT",
+		"DSH_SHELL",
 		"CURSOR_TRACE_ID", "CURSOR_AGENT", "CURSOR_EXTENSION_HOST_ROLE",
 		"KIMI_PLUGIN_ROOT",
 		"GROK_PLUGIN_ROOT", "GROK_PLUGIN_DATA",

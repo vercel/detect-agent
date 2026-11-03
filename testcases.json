@@ -297,5 +297,60 @@
     "env": { "AI_AGENT": "  custom-agent  " },
     "expectedIsAgent": true,
     "expectedName": "custom-agent"
+  },
+  {
+    "name": "DeepSeek Harness DSH_SHELL '1'",
+    "env": {
+      "DSH_SHELL": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "DEEPSEEK_HARNESS"
+  },
+  {
+    "name": "DeepSeek Harness DSH_SHELL '0'",
+    "env": {
+      "DSH_SHELL": "0"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "DEEPSEEK_HARNESS"
+  },
+  {
+    "name": "DeepSeek Harness DSH_SHELL 'false'",
+    "env": {
+      "DSH_SHELL": "false"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "DEEPSEEK_HARNESS"
+  },
+  {
+    "name": "DeepSeek Harness DSH_SHELL ' '",
+    "env": {
+      "DSH_SHELL": " "
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "DEEPSEEK_HARNESS"
+  },
+  {
+    "name": "DeepSeek Harness DSH_SHELL ''",
+    "env": {
+      "DSH_SHELL": ""
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "DeepSeek home configuration is not execution",
+    "env": {
+      "DSH_HOME": "synthetic-home"
+    },
+    "expectedIsAgent": false
+  },
+  {
+    "name": "nested Claude wins over DeepSeek host",
+    "env": {
+      "DSH_SHELL": "1",
+      "CLAUDECODE": "1"
+    },
+    "expectedIsAgent": true,
+    "expectedAgentKey": "CLAUDE"
   }
 ]
