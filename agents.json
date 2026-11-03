@@ -49,6 +49,20 @@
       }
     },
     {
+      "key": "QWEN_CODE",
+      "name": "qwen-code",
+      "description": "Qwen Code execution marker; see docs/agent-signals/qwen-code.md",
+      "match": {
+        "type": "anyOf",
+        "conditions": [
+          {
+            "type": "env_set",
+            "name": "QWEN_CODE"
+          }
+        ]
+      }
+    },
+    {
       "key": "GEMINI",
       "name": "gemini_cli",
       "match": {
